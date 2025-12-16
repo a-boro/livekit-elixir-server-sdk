@@ -21,7 +21,6 @@
           {Credo.Check.Consistency.SpaceInParentheses},
           {Credo.Check.Consistency.TabsOrSpaces},
           ## Design Checks
-          {Credo.Check.Design.AliasUsage},
           {Credo.Check.Design.DuplicatedCode},
           ## Readability Checks
           {Credo.Check.Readability.AliasOrder},
@@ -75,6 +74,7 @@
         ],
         disabled: [
           {Credo.Check.Refactor.ABCSize, []},
+          {Credo.Check.Design.AliasUsage, []},
           {Credo.Check.Refactor.AppendSingleItem, []},
           {Credo.Check.Refactor.ModuleDependencies, []},
           {Credo.Check.Refactor.NegatedIsNil, []},
