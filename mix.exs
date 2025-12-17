@@ -21,6 +21,7 @@ defmodule ExLivekit.MixProject do
     [
       {:joken, "~> 2.6"},
       {:jason, "~> 1.4"},
+      {:protobuf, "~> 0.14.1"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
