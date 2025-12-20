@@ -1,11 +1,9 @@
 defmodule ExLivekit.TokenVerifier do
-  alias ExLivekit.Grants.{ClaimGrant, VideoGrant, SIPGrant, InferenceGrant, ObservabilityGrant}
+  alias ExLivekit.Config
+  alias ExLivekit.Grants.{ClaimGrant, InferenceGrant, ObservabilityGrant, SIPGrant, VideoGrant}
 
-  def verify(token) do
-    verify(token, Application.fetch_env!(:ex_livekit, :livekit_api_secret))
-  end
-
-  def verify(token, api_secret) when is_binary(api_secret) do
+  def verify(token, opts \\ []) do
+    api_secret = Config.fetch_from_opts!(:api_secret, opts)
     signer = Joken.Signer.create("HS256", api_secret)
 
     case Joken.verify(token, signer) do

@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.CompileProto do
+  @moduledoc false
+  @shortdoc "Compiles the protocol buffers"
+
   use Mix.Task
 
   @output_dir "lib/proto"
@@ -15,7 +18,7 @@ defmodule Mix.Tasks.CompileProto do
     "livekit_webhook.proto"
   ]
 
-  @shortdoc "Compiles the protocol buffers"
+  @impl Mix.Task
   def run(_args) do
     # Create output directory if it doesn't exist
     File.mkdir_p!(@output_dir)
@@ -23,7 +26,8 @@ defmodule Mix.Tasks.CompileProto do
     @protocol_files
     |> Enum.map(&Path.join(@protocol_dir, &1))
     |> Enum.map(&exec_sys_cmd/1)
-    |> Enum.map(&Mix.shell().info(inspect(&1)))
+    |> Enum.map(&inspect/1)
+    |> Enum.each(&IO.puts/1)
   end
 
   defp exec_sys_cmd(proto_file_path) do

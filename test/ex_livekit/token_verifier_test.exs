@@ -1,12 +1,9 @@
 defmodule ExLivekit.TokenVerifierTest do
   use ExUnit.Case, async: true
 
-  alias ExLivekit.TokenVerifier
   alias ExLivekit.AccessToken
-  alias ExLivekit.Grants.VideoGrant
-  alias ExLivekit.Grants.ObservabilityGrant
-  alias ExLivekit.Grants.SIPGrant
-  alias ExLivekit.Grants.InferenceGrant
+  alias ExLivekit.Grants.{InferenceGrant, ObservabilityGrant, SIPGrant, VideoGrant}
+  alias ExLivekit.TokenVerifier
 
   @api_key "api_key"
   @api_secret "api_secret"
@@ -14,7 +11,7 @@ defmodule ExLivekit.TokenVerifierTest do
   describe "verify/1" do
     test "verifies a token" do
       token =
-        AccessToken.new(@api_key, @api_secret)
+        AccessToken.new(api_key: @api_key, api_secret: @api_secret)
         |> AccessToken.add_identity("test_identity")
         |> AccessToken.add_ttl(3600)
         |> AccessToken.add_metadata("test_metadata")
@@ -29,7 +26,8 @@ defmodule ExLivekit.TokenVerifierTest do
         |> AccessToken.add_sha256("test_sha256")
         |> AccessToken.to_jwt()
 
-      assert {:ok, jwt_claims, claims_grant} = TokenVerifier.verify(token, @api_secret)
+      assert {:ok, jwt_claims, claims_grant} =
+               TokenVerifier.verify(token, api_secret: @api_secret)
 
       assert jwt_claims["sub"] == "test_identity"
       assert jwt_claims["iss"] == @api_key

@@ -1,4 +1,5 @@
 defmodule ExLivekit.AccessToken do
+  alias ExLivekit.Config
   alias ExLivekit.Grants.{ClaimGrant, InferenceGrant, ObservabilityGrant, SIPGrant, VideoGrant}
 
   @default_ttl 3600
@@ -27,18 +28,11 @@ defmodule ExLivekit.AccessToken do
         }
 
   @spec new() :: t()
-  def new do
-    new(
-      Application.fetch_env!(:ex_livekit, :livekit_api_key),
-      Application.fetch_env!(:ex_livekit, :livekit_api_secret)
-    )
-  end
-
-  @spec new(api_key, api_secret) :: t()
-  def new(api_key, api_secret) do
+  @spec new(opts :: Keyword.t()) :: t()
+  def new(opts \\ []) do
     %__MODULE__{
-      api_key: api_key,
-      api_secret: api_secret
+      api_key: Config.fetch_from_opts!(:api_key, opts),
+      api_secret: Config.fetch_from_opts!(:api_secret, opts)
     }
   end
 
@@ -70,7 +64,7 @@ defmodule ExLivekit.AccessToken do
 
   def add_grants(%__MODULE__{grants: %ClaimGrant{video: nil} = claims} = token, grants)
       when is_non_struct_map(grants) do
-    add_grants(%{token | grants: %{claims | video: %VideoGrant{}}}, grants)
+    %{token | grants: %{claims | video: struct(VideoGrant, grants)}}
   end
 
   def add_grants(%__MODULE__{grants: %ClaimGrant{video: %VideoGrant{}} = claims} = token, grants)
