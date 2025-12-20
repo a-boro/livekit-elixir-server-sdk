@@ -1,5 +1,7 @@
 defmodule Mix.Tasks.CompileProto do
   @moduledoc false
+  @shortdoc "Compiles the protocol buffers"
+
   use Mix.Task
 
   @output_dir "lib/proto"
@@ -16,7 +18,6 @@ defmodule Mix.Tasks.CompileProto do
     "livekit_webhook.proto"
   ]
 
-  @shortdoc "Compiles the protocol buffers"
   @impl Mix.Task
   def run(_args) do
     # Create output directory if it doesn't exist

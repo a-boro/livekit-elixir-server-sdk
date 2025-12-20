@@ -64,7 +64,7 @@ defmodule ExLivekit.AccessToken do
 
   def add_grants(%__MODULE__{grants: %ClaimGrant{video: nil} = claims} = token, grants)
       when is_non_struct_map(grants) do
-    add_grants(%{token | grants: %{claims | video: %VideoGrant{}}}, grants)
+    %{token | grants: %{claims | video: struct(VideoGrant, grants)}}
   end
 
   def add_grants(%__MODULE__{grants: %ClaimGrant{video: %VideoGrant{}} = claims} = token, grants)
