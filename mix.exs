@@ -13,15 +13,23 @@ defmodule ExLivekit.MixProject do
 
   def application do
     [
-      extra_applications: [:logger, :crypto]
+      extra_applications: [:logger, :crypto],
+      mod: {ExLivekit, []}
     ]
   end
 
   defp deps do
     [
+      # http clients
+      {:hackney, "~> 1.22", optional: true},
+      {:finch, "~> 0.2", optional: true},
+
+      # data formats
       {:joken, "~> 2.6"},
       {:jason, "~> 1.4"},
       {:protobuf, "~> 0.14.1"},
+
+      # devtools
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]

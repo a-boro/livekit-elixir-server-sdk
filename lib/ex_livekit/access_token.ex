@@ -27,7 +27,8 @@ defmodule ExLivekit.AccessToken do
           ttl: ttl()
         }
 
-  @spec new(opts: Keyword.t()) :: t()
+  @spec new() :: t()
+  @spec new(opts :: Keyword.t()) :: t()
   def new(opts \\ []) do
     %__MODULE__{
       api_key: Config.fetch_from_opts!(:api_key, opts),
