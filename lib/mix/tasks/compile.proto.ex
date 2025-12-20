@@ -7,7 +7,6 @@ defmodule Mix.Tasks.CompileProto do
   @output_dir "lib/proto"
   @protocol_dir "protocol/protobufs"
   @protocol_files [
-    "logger/options.proto",
     "livekit_agent_dispatch.proto",
     "livekit_agent.proto",
     "livekit_egress.proto",
@@ -34,6 +33,7 @@ defmodule Mix.Tasks.CompileProto do
     params = [
       "--elixir_out=#{@output_dir}",
       "--proto_path=#{@protocol_dir}",
+      "--include_imports",
       proto_file_path
     ]
 

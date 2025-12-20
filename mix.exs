@@ -32,7 +32,8 @@ defmodule ExLivekit.MixProject do
 
       # devtools
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:bypass, "~> 2.0", only: [:test]}
     ]
   end
 end

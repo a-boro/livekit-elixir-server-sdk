@@ -29,7 +29,7 @@ defmodule ExLivekit.Client do
   Use `send_request/5` to make API calls:
 
       auth_headers = ExLivekit.Client.auth_headers(client)
-      {:ok, response_body} = ExLivekit.Client.send_request(client, "RoomService", "CreateRoom", payload, auth_headers)
+      {:ok, response_body} = ExLivekit.Client.request(client, "RoomService", "CreateRoom", payload, auth_headers)
   """
 
   alias ExLivekit.AccessToken
@@ -97,22 +97,23 @@ defmodule ExLivekit.Client do
 
   ## Examples
 
-      {:ok, response} = ExLivekit.Client.send_request(
+      {:ok, response} = ExLivekit.Client.request(
         client,
         "RoomService",
         "CreateRoom",
-        protobuf_payload,
+        %Livekit.CreateRoomRequest{name: "test_room"},
         auth_headers
       )
   """
-  @spec send_request(t(), String.t(), String.t(), binary(), list()) ::
+  @spec request(t(), String.t(), String.t(), struct(), list()) ::
           {:ok, binary()} | {:error, map() | term()}
-  def send_request(%__MODULE__{} = client, svc, method, payload, auth_headers \\ []) do
+  def request(%__MODULE__{} = client, svc, method, payload, auth_headers \\ []) do
     url = prepare_url(client.host, svc, method)
     http_client = Config.http_client()
     headers = auth_headers ++ @base_headers
+    encoded_payload = Protobuf.encode(payload)
 
-    case http_client.post(url, payload, headers) do
+    case http_client.post(url, encoded_payload, headers) do
       {:ok, %{status: 200, body: body}} ->
         {:ok, body}
 
