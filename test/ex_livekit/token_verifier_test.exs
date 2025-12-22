@@ -44,5 +44,32 @@ defmodule ExLivekit.TokenVerifierTest do
       assert claims_grant.room_preset == "test_room_preset"
       assert claims_grant.sha256 == "test_sha256"
     end
+
+    test "verifies signature when verify_signature is true" do
+      token =
+        AccessToken.new(api_key: @api_key, api_secret: @api_secret)
+        |> AccessToken.add_identity("test_identity")
+        |> AccessToken.to_jwt()
+
+      assert {:ok, _jwt_claims, _claims_grant} =
+               TokenVerifier.verify(token,
+                 api_secret: @api_secret,
+                 api_key: @api_key,
+                 verify_signature: true
+               )
+    end
+
+    test "returns {:error, :invalid_signature} when verify_signature is true and signature is invalid" do
+      token =
+        AccessToken.new(api_key: @api_key, api_secret: @api_secret)
+        |> AccessToken.add_identity("test_identity")
+        |> AccessToken.to_jwt()
+
+      assert TokenVerifier.verify(token,
+               api_secret: @api_secret,
+               api_key: "invalid_api_key",
+               verify_signature: true
+             ) == {:error, :invalid_issuer}
+    end
   end
 end
