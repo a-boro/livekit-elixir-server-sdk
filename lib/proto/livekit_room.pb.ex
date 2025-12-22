@@ -1,6 +1,5 @@
 defmodule Livekit.CreateRoomRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :name, 1, type: :string
@@ -19,8 +18,7 @@ defmodule Livekit.CreateRoomRequest do
 end
 
 defmodule Livekit.RoomEgress do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: Livekit.RoomCompositeEgressRequest
@@ -29,62 +27,54 @@ defmodule Livekit.RoomEgress do
 end
 
 defmodule Livekit.RoomAgent do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :dispatches, 1, repeated: true, type: Livekit.RoomAgentDispatch
 end
 
 defmodule Livekit.ListRoomsRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :names, 1, repeated: true, type: :string
 end
 
 defmodule Livekit.ListRoomsResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :rooms, 1, repeated: true, type: Livekit.Room
 end
 
 defmodule Livekit.DeleteRoomRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
 end
 
 defmodule Livekit.DeleteRoomResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.ListParticipantsRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
 end
 
 defmodule Livekit.ListParticipantsResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :participants, 1, repeated: true, type: Livekit.ParticipantInfo
 end
 
 defmodule Livekit.RoomParticipantIdentity do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -92,14 +82,12 @@ defmodule Livekit.RoomParticipantIdentity do
 end
 
 defmodule Livekit.RemoveParticipantResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.MuteRoomTrackRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -109,16 +97,14 @@ defmodule Livekit.MuteRoomTrackRequest do
 end
 
 defmodule Livekit.MuteRoomTrackResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :track, 1, type: Livekit.TrackInfo
 end
 
 defmodule Livekit.UpdateParticipantRequest.AttributesEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :string
@@ -126,8 +112,7 @@ defmodule Livekit.UpdateParticipantRequest.AttributesEntry do
 end
 
 defmodule Livekit.UpdateParticipantRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -144,8 +129,7 @@ defmodule Livekit.UpdateParticipantRequest do
 end
 
 defmodule Livekit.UpdateSubscriptionsRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -160,14 +144,12 @@ defmodule Livekit.UpdateSubscriptionsRequest do
 end
 
 defmodule Livekit.UpdateSubscriptionsResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.SendDataRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -190,14 +172,12 @@ defmodule Livekit.SendDataRequest do
 end
 
 defmodule Livekit.SendDataResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.UpdateRoomMetadataRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -205,8 +185,7 @@ defmodule Livekit.UpdateRoomMetadataRequest do
 end
 
 defmodule Livekit.RoomConfiguration do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :name, 1, type: :string
@@ -222,8 +201,7 @@ defmodule Livekit.RoomConfiguration do
 end
 
 defmodule Livekit.ForwardParticipantRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -232,14 +210,12 @@ defmodule Livekit.ForwardParticipantRequest do
 end
 
 defmodule Livekit.ForwardParticipantResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.MoveParticipantRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -248,14 +224,12 @@ defmodule Livekit.MoveParticipantRequest do
 end
 
 defmodule Livekit.MoveParticipantResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.PerformRpcRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room, 1, type: :string
@@ -266,8 +240,7 @@ defmodule Livekit.PerformRpcRequest do
 end
 
 defmodule Livekit.PerformRpcResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :payload, 1, type: :string

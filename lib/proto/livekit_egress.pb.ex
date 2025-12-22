@@ -1,6 +1,5 @@
 defmodule Livekit.EncodedFileType do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :DEFAULT_FILETYPE, 0
@@ -10,8 +9,7 @@ defmodule Livekit.EncodedFileType do
 end
 
 defmodule Livekit.SegmentedFileProtocol do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :DEFAULT_SEGMENTED_FILE_PROTOCOL, 0
@@ -19,8 +17,7 @@ defmodule Livekit.SegmentedFileProtocol do
 end
 
 defmodule Livekit.SegmentedFileSuffix do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :INDEX, 0
@@ -28,8 +25,7 @@ defmodule Livekit.SegmentedFileSuffix do
 end
 
 defmodule Livekit.ImageFileSuffix do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :IMAGE_SUFFIX_INDEX, 0
@@ -38,8 +34,7 @@ defmodule Livekit.ImageFileSuffix do
 end
 
 defmodule Livekit.StreamProtocol do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :DEFAULT_PROTOCOL, 0
@@ -48,8 +43,7 @@ defmodule Livekit.StreamProtocol do
 end
 
 defmodule Livekit.AudioMixing do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :DEFAULT_MIXING, 0
@@ -58,8 +52,7 @@ defmodule Livekit.AudioMixing do
 end
 
 defmodule Livekit.EncodingOptionsPreset do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :H264_720P_30, 0
@@ -73,8 +66,7 @@ defmodule Livekit.EncodingOptionsPreset do
 end
 
 defmodule Livekit.EgressStatus do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :EGRESS_STARTING, 0
@@ -87,8 +79,7 @@ defmodule Livekit.EgressStatus do
 end
 
 defmodule Livekit.EgressSourceType do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :EGRESS_SOURCE_TYPE_WEB, 0
@@ -96,8 +87,7 @@ defmodule Livekit.EgressSourceType do
 end
 
 defmodule Livekit.StreamInfo.Status do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :ACTIVE, 0
@@ -106,8 +96,7 @@ defmodule Livekit.StreamInfo.Status do
 end
 
 defmodule Livekit.RoomCompositeEgressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -146,8 +135,7 @@ defmodule Livekit.RoomCompositeEgressRequest do
 end
 
 defmodule Livekit.WebEgressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -184,8 +172,7 @@ defmodule Livekit.WebEgressRequest do
 end
 
 defmodule Livekit.ParticipantEgressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :options, 0
@@ -213,8 +200,7 @@ defmodule Livekit.ParticipantEgressRequest do
 end
 
 defmodule Livekit.TrackCompositeEgressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -250,8 +236,7 @@ defmodule Livekit.TrackCompositeEgressRequest do
 end
 
 defmodule Livekit.TrackEgressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -264,8 +249,7 @@ defmodule Livekit.TrackEgressRequest do
 end
 
 defmodule Livekit.EncodedFileOutput do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -280,8 +264,7 @@ defmodule Livekit.EncodedFileOutput do
 end
 
 defmodule Livekit.SegmentedFileOutput do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -305,8 +288,7 @@ defmodule Livekit.SegmentedFileOutput do
 end
 
 defmodule Livekit.DirectFileOutput do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -320,8 +302,7 @@ defmodule Livekit.DirectFileOutput do
 end
 
 defmodule Livekit.ImageOutput do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0
@@ -345,8 +326,7 @@ defmodule Livekit.ImageOutput do
 end
 
 defmodule Livekit.S3Upload.MetadataEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :string
@@ -354,8 +334,7 @@ defmodule Livekit.S3Upload.MetadataEntry do
 end
 
 defmodule Livekit.S3Upload do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :access_key, 1, type: :string, json_name: "accessKey", deprecated: false
@@ -374,8 +353,7 @@ defmodule Livekit.S3Upload do
 end
 
 defmodule Livekit.GCPUpload do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :credentials, 1, type: :string, deprecated: false
@@ -384,8 +362,7 @@ defmodule Livekit.GCPUpload do
 end
 
 defmodule Livekit.AzureBlobUpload do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :account_name, 1, type: :string, json_name: "accountName", deprecated: false
@@ -394,8 +371,7 @@ defmodule Livekit.AzureBlobUpload do
 end
 
 defmodule Livekit.AliOSSUpload do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :access_key, 1, type: :string, json_name: "accessKey", deprecated: false
@@ -406,8 +382,7 @@ defmodule Livekit.AliOSSUpload do
 end
 
 defmodule Livekit.ProxyConfig do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :url, 1, type: :string
@@ -416,8 +391,7 @@ defmodule Livekit.ProxyConfig do
 end
 
 defmodule Livekit.StreamOutput do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :protocol, 1, type: Livekit.StreamProtocol, enum: true
@@ -425,8 +399,7 @@ defmodule Livekit.StreamOutput do
 end
 
 defmodule Livekit.EncodingOptions do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :width, 1, type: :int32
@@ -444,8 +417,7 @@ defmodule Livekit.EncodingOptions do
 end
 
 defmodule Livekit.UpdateLayoutRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :egress_id, 1, type: :string, json_name: "egressId"
@@ -453,8 +425,7 @@ defmodule Livekit.UpdateLayoutRequest do
 end
 
 defmodule Livekit.UpdateStreamRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :egress_id, 1, type: :string, json_name: "egressId"
@@ -463,8 +434,7 @@ defmodule Livekit.UpdateStreamRequest do
 end
 
 defmodule Livekit.ListEgressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room_name, 1, type: :string, json_name: "roomName"
@@ -473,24 +443,21 @@ defmodule Livekit.ListEgressRequest do
 end
 
 defmodule Livekit.ListEgressResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :items, 1, repeated: true, type: Livekit.EgressInfo
 end
 
 defmodule Livekit.StopEgressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :egress_id, 1, type: :string, json_name: "egressId"
 end
 
 defmodule Livekit.EgressInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :request, 0
@@ -540,16 +507,14 @@ defmodule Livekit.EgressInfo do
 end
 
 defmodule Livekit.StreamInfoList do
-  @moduledoc false
-
+  
   use Protobuf, deprecated: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :info, 1, repeated: true, type: Livekit.StreamInfo
 end
 
 defmodule Livekit.StreamInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :url, 1, type: :string
@@ -563,8 +528,7 @@ defmodule Livekit.StreamInfo do
 end
 
 defmodule Livekit.FileInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :filename, 1, type: :string
@@ -576,8 +540,7 @@ defmodule Livekit.FileInfo do
 end
 
 defmodule Livekit.SegmentsInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :playlist_name, 1, type: :string, json_name: "playlistName"
@@ -592,8 +555,7 @@ defmodule Livekit.SegmentsInfo do
 end
 
 defmodule Livekit.ImagesInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :filename_prefix, 4, type: :string, json_name: "filenamePrefix"
@@ -603,8 +565,7 @@ defmodule Livekit.ImagesInfo do
 end
 
 defmodule Livekit.AutoParticipantEgress do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :options, 0
@@ -624,8 +585,7 @@ defmodule Livekit.AutoParticipantEgress do
 end
 
 defmodule Livekit.AutoTrackEgress do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :output, 0

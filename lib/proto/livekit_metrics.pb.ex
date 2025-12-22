@@ -1,6 +1,5 @@
 defmodule Livekit.MetricLabel do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :AGENTS_LLM_TTFT, 0
@@ -27,8 +26,7 @@ defmodule Livekit.MetricLabel do
 end
 
 defmodule Livekit.MetricsBatch do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :timestamp_ms, 1, type: :int64, json_name: "timestampMs"
@@ -43,8 +41,7 @@ defmodule Livekit.MetricsBatch do
 end
 
 defmodule Livekit.TimeSeriesMetric do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :label, 1, type: :uint32
@@ -55,8 +52,7 @@ defmodule Livekit.TimeSeriesMetric do
 end
 
 defmodule Livekit.MetricSample do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :timestamp_ms, 1, type: :int64, json_name: "timestampMs"
@@ -69,8 +65,7 @@ defmodule Livekit.MetricSample do
 end
 
 defmodule Livekit.EventMetric do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :label, 1, type: :uint32
@@ -93,8 +88,7 @@ defmodule Livekit.EventMetric do
 end
 
 defmodule Livekit.MetricsRecordingHeader.RoomTagsEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :string
@@ -102,8 +96,7 @@ defmodule Livekit.MetricsRecordingHeader.RoomTagsEntry do
 end
 
 defmodule Livekit.MetricsRecordingHeader do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room_id, 1, type: :string, json_name: "roomId"

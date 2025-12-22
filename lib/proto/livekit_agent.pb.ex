@@ -1,6 +1,5 @@
 defmodule Livekit.JobType do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :JT_ROOM, 0
@@ -9,8 +8,7 @@ defmodule Livekit.JobType do
 end
 
 defmodule Livekit.WorkerStatus do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :WS_AVAILABLE, 0
@@ -18,8 +16,7 @@ defmodule Livekit.WorkerStatus do
 end
 
 defmodule Livekit.JobStatus do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :JS_PENDING, 0
@@ -29,8 +26,7 @@ defmodule Livekit.JobStatus do
 end
 
 defmodule Livekit.Job do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :id, 1, type: :string
@@ -46,8 +42,7 @@ defmodule Livekit.Job do
 end
 
 defmodule Livekit.JobState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :status, 1, type: Livekit.JobStatus, enum: true
@@ -61,8 +56,7 @@ defmodule Livekit.JobState do
 end
 
 defmodule Livekit.WorkerMessage do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :message, 0
@@ -77,8 +71,7 @@ defmodule Livekit.WorkerMessage do
 end
 
 defmodule Livekit.ServerMessage do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :message, 0
@@ -91,8 +84,7 @@ defmodule Livekit.ServerMessage do
 end
 
 defmodule Livekit.SimulateJobRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :type, 1, type: Livekit.JobType, enum: true
@@ -101,16 +93,14 @@ defmodule Livekit.SimulateJobRequest do
 end
 
 defmodule Livekit.WorkerPing do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :timestamp, 1, type: :int64
 end
 
 defmodule Livekit.WorkerPong do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :last_timestamp, 1, type: :int64, json_name: "lastTimestamp"
@@ -118,8 +108,7 @@ defmodule Livekit.WorkerPong do
 end
 
 defmodule Livekit.RegisterWorkerRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :type, 1, type: Livekit.JobType, enum: true
@@ -134,8 +123,7 @@ defmodule Livekit.RegisterWorkerRequest do
 end
 
 defmodule Livekit.RegisterWorkerResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :worker_id, 1, type: :string, json_name: "workerId"
@@ -143,16 +131,14 @@ defmodule Livekit.RegisterWorkerResponse do
 end
 
 defmodule Livekit.MigrateJobRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :job_ids, 2, repeated: true, type: :string, json_name: "jobIds"
 end
 
 defmodule Livekit.AvailabilityRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :job, 1, type: Livekit.Job
@@ -160,8 +146,7 @@ defmodule Livekit.AvailabilityRequest do
 end
 
 defmodule Livekit.AvailabilityResponse.ParticipantAttributesEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :string
@@ -169,8 +154,7 @@ defmodule Livekit.AvailabilityResponse.ParticipantAttributesEntry do
 end
 
 defmodule Livekit.AvailabilityResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :job_id, 1, type: :string, json_name: "jobId"
@@ -189,8 +173,7 @@ defmodule Livekit.AvailabilityResponse do
 end
 
 defmodule Livekit.UpdateJobStatus do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :job_id, 1, type: :string, json_name: "jobId"
@@ -199,8 +182,7 @@ defmodule Livekit.UpdateJobStatus do
 end
 
 defmodule Livekit.UpdateWorkerStatus do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :status, 1, proto3_optional: true, type: Livekit.WorkerStatus, enum: true
@@ -209,8 +191,7 @@ defmodule Livekit.UpdateWorkerStatus do
 end
 
 defmodule Livekit.JobAssignment do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :job, 1, type: Livekit.Job
@@ -219,8 +200,7 @@ defmodule Livekit.JobAssignment do
 end
 
 defmodule Livekit.JobTermination do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :job_id, 1, type: :string, json_name: "jobId"
