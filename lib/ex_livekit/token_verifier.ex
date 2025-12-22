@@ -2,6 +2,8 @@ defmodule ExLivekit.TokenVerifier do
   alias ExLivekit.Config
   alias ExLivekit.Grants.{ClaimGrant, InferenceGrant, ObservabilityGrant, SIPGrant, VideoGrant}
 
+  @spec verify(token :: binary(), opts :: Keyword.t()) ::
+          {:ok, map(), ClaimGrant.t()} | {:error, :invalid_token} | {:error, :invalid_issuer}
   def verify(token, opts \\ []) do
     api_secret = Config.fetch_from_opts!(:api_secret, opts)
     signer = Joken.Signer.create("HS256", api_secret)
@@ -9,11 +11,17 @@ defmodule ExLivekit.TokenVerifier do
     case Joken.verify(token, signer) do
       {:ok, claims} ->
         jwt_claims = jwt_claims_to_snake_map(claims)
+        result = {:ok, jwt_claims, claims_to_struct(jwt_claims)}
+        verify_signature = opts[:verify_signature] || false
 
-        {:ok, jwt_claims, claims_to_struct(jwt_claims)}
+        if verify_signature do
+          verify_signature(result, opts)
+        else
+          result
+        end
 
-      {:error, reason} ->
-        {:error, reason}
+      {:error, _reason} ->
+        {:error, :invalid_token}
     end
   end
 
@@ -66,5 +74,15 @@ defmodule ExLivekit.TokenVerifier do
       |> Stream.reject(fn {k, _v} -> k in [nil, ""] end)
       |> Map.new()
     )
+  end
+
+  defp verify_signature({:ok, jwt_claims, _claims_grant} = result, opts) do
+    api_key = Config.fetch_from_opts!(:api_key, opts)
+
+    if jwt_claims["iss"] == api_key do
+      result
+    else
+      {:error, :invalid_issuer}
+    end
   end
 end
