@@ -1,4 +1,10 @@
 defmodule ExLivekit.EgressService do
+  @moduledoc """
+  Module for interacting with the LiveKit Egress Service.
+
+  This module provides functionality to start, stop, and update egresses.
+  """
+
   alias ExLivekit.Client
   alias ExLivekit.Client.Error
   alias ExLivekit.Grants.VideoGrant
