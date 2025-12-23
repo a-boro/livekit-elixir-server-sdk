@@ -52,7 +52,7 @@ defmodule ExLivekit.MixProject do
   defp docs do
     [
       main: "readme",
-      extras: ["README.md"],
+      extras: ["README.md", "LICENSE"],
       formatters: ["html"],
       output: "doc",
       source_ref: "main",
