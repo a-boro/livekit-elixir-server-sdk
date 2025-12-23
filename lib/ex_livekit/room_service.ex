@@ -1,4 +1,10 @@
 defmodule ExLivekit.RoomService do
+  @moduledoc """
+  Module for interacting with the LiveKit Room Service.
+
+  This module provides functionality to create, list, delete, and update rooms, as well as manage participants and subscriptions.
+  """
+
   alias ExLivekit.Client
   alias ExLivekit.Grants.VideoGrant
 
@@ -55,6 +61,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Lists rooms that are active on the server.
+
+  ## Examples
+
+  ```elixir
+  {:ok, rooms} = ExLivekit.RoomService.list_rooms(client)
+  ```
+  """
   @spec list_rooms(Client.t(), opts()) :: {:ok, ListRoomsResponse.t()} | {:error, term()}
   def list_rooms(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_list: true})
@@ -66,6 +81,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Deletes an existing room by name or id.
+
+  ## Examples
+
+  ```elixir
+  :ok = ExLivekit.RoomService.delete_room(client, "room_name")
+  ```
+  """
   @spec delete_room(Client.t(), room_name()) :: :ok | {:error, term()}
   def delete_room(%Client{} = client, room_name) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_create: true})
@@ -77,6 +101,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Updates the metadata of a room.
+
+  ## Examples
+
+  ```elixir
+  {:ok, room} = ExLivekit.RoomService.update_room_metadata(client, "room_name", "new_metadata")
+  ```
+  """
   @spec update_room_metadata(Client.t(), room_name(), String.t()) ::
           {:ok, Livekit.Room.t()} | {:error, term()}
   def update_room_metadata(%Client{} = client, room_name, metadata) do
@@ -91,6 +124,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Lists participants in a room.
+
+  ## Examples
+
+  ```elixir
+  {:ok, participants} = ExLivekit.RoomService.list_participants(client, "room_name")
+  ```
+  """
   @spec list_participants(Client.t(), room_name()) ::
           {:ok, ListParticipantsResponse.t()} | {:error, term()}
   def list_participants(%Client{} = client, room_name) do
@@ -105,6 +147,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Gets information on a specific participant in a room.
+
+  ## Examples
+
+  ```elixir
+  {:ok, participant} = ExLivekit.RoomService.get_participant(client, "room_name", "participant_identity")
+  ```
+  """
   @spec get_participant(Client.t(), room_name(), String.t()) ::
           {:ok, ParticipantInfo.t()} | {:error, term()}
   def get_participant(%Client{} = client, room_name, identity) do
@@ -119,6 +170,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Removes a participant from a room.
+
+  ## Examples
+
+  ```elixir
+  :ok = ExLivekit.RoomService.remove_participant(client, "room_name", "participant_identity")
+  ```
+  """
   @spec remove_participant(Client.t(), room_name(), String.t()) :: :ok | {:error, term()}
   def remove_participant(%Client{} = client, room_name, identity) do
     auth_headers =
@@ -132,6 +192,16 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Forwards a participant from one room to another.
+  Available in LiveKit Cloud only.
+
+  ## Examples
+
+  ```elixir
+  :ok = ExLivekit.RoomService.forward_participant(client, "room_name", "participant_identity", "destination_room")
+  ```
+  """
   @spec forward_participant(Client.t(), room_name(), String.t(), String.t()) ::
           :ok | {:error, term()}
   def forward_participant(%Client{} = client, room_name, identity, destination_room) do
@@ -156,6 +226,16 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Moves a participant from one room to another.
+  Available in LiveKit Cloud only.
+
+  ## Examples
+
+  ```elixir
+  :ok = ExLivekit.RoomService.move_participant(client, "room_name", "participant_identity", "destination_room")
+  ```
+  """
   @spec move_participant(Client.t(), room_name(), String.t(), String.t()) ::
           :ok | {:error, term()}
   def move_participant(%Client{} = client, room_name, identity, destination_room) do
@@ -180,6 +260,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Mutes a published track for a participant in a room.
+
+  ## Examples
+
+  ```elixir
+  {:ok, track} = ExLivekit.RoomService.mute_published_track(client, "room_name", "participant_identity", "track_sid", true)
+  ```
+  """
   @spec mute_published_track(Client.t(), room_name(), String.t(), String.t(), boolean()) ::
           {:ok, Livekit.TrackInfo.t()} | {:error, term()}
   def mute_published_track(%Client{} = client, room_name, identity, track_sid, muted) do
@@ -199,6 +288,15 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Updates the metadata of a participant in a room.
+
+  ## Examples
+
+  ```elixir
+  {:ok, participant} = ExLivekit.RoomService.update_participant(client, "room_name", "participant_identity", "new_metadata")
+  ```
+  """
   @spec update_participant(Client.t(), room_name(), String.t(), opts()) ::
           {:ok, ParticipantInfo.t()} | {:error, term()}
   def update_participant(%Client{} = client, room_name, identity, opts \\ []) do
@@ -227,6 +325,20 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Updates the subscriptions of a participant in a room.
+
+  Options:
+  - track_sids: list of track sids to subscribe to
+  - subscribe: true to subscribe, false to unsubscribe
+  - participant_tracks: list of participant tracks to subscribe to
+
+  ## Examples
+
+  ```elixir
+  :ok = ExLivekit.RoomService.update_subscriptions(client, "room_name", "participant_identity", "track_sid")
+  ```
+  """
   @spec update_subscriptions(Client.t(), room_name(), String.t(), opts()) ::
           :ok | {:error, term()}
   def update_subscriptions(%Client{} = client, room_name, identity, opts \\ []) do
@@ -247,6 +359,19 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @doc """
+  Sends data to a room.
+
+  Options:
+  - destination_identities: list of identities to send the data to
+  - topic: topic to send the data to
+
+  ## Examples
+
+  ```elixir
+  :ok = ExLivekit.RoomService.send_data(client, "room_name", "data", "kind", destination_identities: ["identity1", "identity2"], topic: "topic")
+  ```
+  """
   @spec send_data(Client.t(), room_name(), binary(), Livekit.DataPacket.Kind.t(), opts()) ::
           :ok | {:error, term()}
   def send_data(%Client{} = client, room_name, data, kind, opts \\ []) do

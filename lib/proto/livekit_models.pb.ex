@@ -1,6 +1,5 @@
 defmodule Livekit.AudioCodec do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :DEFAULT_AC, 0
@@ -10,8 +9,7 @@ defmodule Livekit.AudioCodec do
 end
 
 defmodule Livekit.VideoCodec do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :DEFAULT_VC, 0
@@ -22,8 +20,7 @@ defmodule Livekit.VideoCodec do
 end
 
 defmodule Livekit.ImageCodec do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :IC_DEFAULT, 0
@@ -31,8 +28,7 @@ defmodule Livekit.ImageCodec do
 end
 
 defmodule Livekit.BackupCodecPolicy do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :PREFER_REGRESSION, 0
@@ -41,8 +37,7 @@ defmodule Livekit.BackupCodecPolicy do
 end
 
 defmodule Livekit.TrackType do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :AUDIO, 0
@@ -51,8 +46,7 @@ defmodule Livekit.TrackType do
 end
 
 defmodule Livekit.TrackSource do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :UNKNOWN, 0
@@ -63,8 +57,7 @@ defmodule Livekit.TrackSource do
 end
 
 defmodule Livekit.DataTrackExtensionID do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :DTEI_INVALID, 0
@@ -72,8 +65,7 @@ defmodule Livekit.DataTrackExtensionID do
 end
 
 defmodule Livekit.VideoQuality do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :LOW, 0
@@ -83,8 +75,7 @@ defmodule Livekit.VideoQuality do
 end
 
 defmodule Livekit.ConnectionQuality do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :POOR, 0
@@ -94,8 +85,7 @@ defmodule Livekit.ConnectionQuality do
 end
 
 defmodule Livekit.ClientConfigSetting do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :UNSET, 0
@@ -104,8 +94,7 @@ defmodule Livekit.ClientConfigSetting do
 end
 
 defmodule Livekit.DisconnectReason do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :UNKNOWN_REASON, 0
@@ -127,8 +116,7 @@ defmodule Livekit.DisconnectReason do
 end
 
 defmodule Livekit.ReconnectReason do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :RR_UNKNOWN, 0
@@ -139,8 +127,7 @@ defmodule Livekit.ReconnectReason do
 end
 
 defmodule Livekit.SubscriptionError do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :SE_UNKNOWN, 0
@@ -149,8 +136,7 @@ defmodule Livekit.SubscriptionError do
 end
 
 defmodule Livekit.AudioTrackFeature do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :TF_STEREO, 0
@@ -163,8 +149,7 @@ defmodule Livekit.AudioTrackFeature do
 end
 
 defmodule Livekit.ParticipantInfo.State do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :JOINING, 0
@@ -174,8 +159,7 @@ defmodule Livekit.ParticipantInfo.State do
 end
 
 defmodule Livekit.ParticipantInfo.Kind do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :STANDARD, 0
@@ -188,8 +172,7 @@ defmodule Livekit.ParticipantInfo.Kind do
 end
 
 defmodule Livekit.ParticipantInfo.KindDetail do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :CLOUD_AGENT, 0
@@ -200,8 +183,7 @@ defmodule Livekit.ParticipantInfo.KindDetail do
 end
 
 defmodule Livekit.Encryption.Type do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :NONE, 0
@@ -210,8 +192,7 @@ defmodule Livekit.Encryption.Type do
 end
 
 defmodule Livekit.VideoLayer.Mode do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :MODE_UNUSED, 0
@@ -221,8 +202,7 @@ defmodule Livekit.VideoLayer.Mode do
 end
 
 defmodule Livekit.DataPacket.Kind do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :RELIABLE, 0
@@ -230,8 +210,7 @@ defmodule Livekit.DataPacket.Kind do
 end
 
 defmodule Livekit.ServerInfo.Edition do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :Standard, 0
@@ -239,8 +218,7 @@ defmodule Livekit.ServerInfo.Edition do
 end
 
 defmodule Livekit.ClientInfo.SDK do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :UNKNOWN, 0
@@ -261,8 +239,7 @@ defmodule Livekit.ClientInfo.SDK do
 end
 
 defmodule Livekit.DataStream.OperationType do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :CREATE, 0
@@ -272,8 +249,7 @@ defmodule Livekit.DataStream.OperationType do
 end
 
 defmodule Livekit.Pagination do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :after_id, 1, type: :string, json_name: "afterId"
@@ -281,16 +257,14 @@ defmodule Livekit.Pagination do
 end
 
 defmodule Livekit.TokenPagination do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :token, 1, type: :string
 end
 
 defmodule Livekit.ListUpdate do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :set, 1, repeated: true, type: :string
@@ -300,8 +274,7 @@ defmodule Livekit.ListUpdate do
 end
 
 defmodule Livekit.Room do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :sid, 1, type: :string
@@ -321,8 +294,7 @@ defmodule Livekit.Room do
 end
 
 defmodule Livekit.Codec do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :mime, 1, type: :string
@@ -330,8 +302,7 @@ defmodule Livekit.Codec do
 end
 
 defmodule Livekit.PlayoutDelay do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :enabled, 1, type: :bool
@@ -340,8 +311,7 @@ defmodule Livekit.PlayoutDelay do
 end
 
 defmodule Livekit.ParticipantPermission do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :can_subscribe, 1, type: :bool, json_name: "canSubscribe"
@@ -362,8 +332,7 @@ defmodule Livekit.ParticipantPermission do
 end
 
 defmodule Livekit.ParticipantInfo.AttributesEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :string
@@ -371,8 +340,7 @@ defmodule Livekit.ParticipantInfo.AttributesEntry do
 end
 
 defmodule Livekit.ParticipantInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :sid, 1, type: :string
@@ -410,14 +378,12 @@ defmodule Livekit.ParticipantInfo do
 end
 
 defmodule Livekit.Encryption do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.SimulcastCodecInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :mime_type, 1, type: :string, json_name: "mimeType"
@@ -434,8 +400,7 @@ defmodule Livekit.SimulcastCodecInfo do
 end
 
 defmodule Livekit.TrackInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :sid, 1, type: :string
@@ -470,8 +435,7 @@ defmodule Livekit.TrackInfo do
 end
 
 defmodule Livekit.DataTrackInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :pub_handle, 1, type: :uint32, json_name: "pubHandle"
@@ -481,8 +445,7 @@ defmodule Livekit.DataTrackInfo do
 end
 
 defmodule Livekit.DataTrackExtensionParticipantSid do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :id, 1, type: Livekit.DataTrackExtensionID, enum: true
@@ -490,16 +453,14 @@ defmodule Livekit.DataTrackExtensionParticipantSid do
 end
 
 defmodule Livekit.DataTrackSubscriptionOptions do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :target_fps, 1, proto3_optional: true, type: :uint32, json_name: "targetFps"
 end
 
 defmodule Livekit.VideoLayer do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :quality, 1, type: Livekit.VideoQuality, enum: true
@@ -512,8 +473,7 @@ defmodule Livekit.VideoLayer do
 end
 
 defmodule Livekit.DataPacket do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :value, 0
@@ -553,8 +513,7 @@ defmodule Livekit.DataPacket do
 end
 
 defmodule Livekit.EncryptedPacket do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :encryption_type, 1,
@@ -568,8 +527,7 @@ defmodule Livekit.EncryptedPacket do
 end
 
 defmodule Livekit.EncryptedPacketPayload do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :value, 0
@@ -585,16 +543,14 @@ defmodule Livekit.EncryptedPacketPayload do
 end
 
 defmodule Livekit.ActiveSpeakerUpdate do
-  @moduledoc false
-
+  
   use Protobuf, deprecated: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :speakers, 1, repeated: true, type: Livekit.SpeakerInfo
 end
 
 defmodule Livekit.SpeakerInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :sid, 1, type: :string
@@ -603,8 +559,7 @@ defmodule Livekit.SpeakerInfo do
 end
 
 defmodule Livekit.UserPacket do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :participant_sid, 1, type: :string, json_name: "participantSid", deprecated: true
@@ -636,8 +591,7 @@ defmodule Livekit.UserPacket do
 end
 
 defmodule Livekit.SipDTMF do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :code, 3, type: :uint32
@@ -645,8 +599,7 @@ defmodule Livekit.SipDTMF do
 end
 
 defmodule Livekit.Transcription do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :transcribed_participant_identity, 2,
@@ -658,8 +611,7 @@ defmodule Livekit.Transcription do
 end
 
 defmodule Livekit.TranscriptionSegment do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :id, 1, type: :string
@@ -671,8 +623,7 @@ defmodule Livekit.TranscriptionSegment do
 end
 
 defmodule Livekit.ChatMessage do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :id, 1, type: :string
@@ -684,8 +635,7 @@ defmodule Livekit.ChatMessage do
 end
 
 defmodule Livekit.RpcRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :id, 1, type: :string
@@ -696,16 +646,14 @@ defmodule Livekit.RpcRequest do
 end
 
 defmodule Livekit.RpcAck do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :request_id, 1, type: :string, json_name: "requestId"
 end
 
 defmodule Livekit.RpcResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :value, 0
@@ -716,8 +664,7 @@ defmodule Livekit.RpcResponse do
 end
 
 defmodule Livekit.RpcError do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :code, 1, type: :uint32
@@ -726,8 +673,7 @@ defmodule Livekit.RpcError do
 end
 
 defmodule Livekit.ParticipantTracks do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :participant_sid, 1, type: :string, json_name: "participantSid"
@@ -735,8 +681,7 @@ defmodule Livekit.ParticipantTracks do
 end
 
 defmodule Livekit.ServerInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :edition, 1, type: Livekit.ServerInfo.Edition, enum: true
@@ -749,8 +694,7 @@ defmodule Livekit.ServerInfo do
 end
 
 defmodule Livekit.ClientInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :sdk, 1, type: Livekit.ClientInfo.SDK, enum: true
@@ -767,8 +711,7 @@ defmodule Livekit.ClientInfo do
 end
 
 defmodule Livekit.ClientConfiguration do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :video, 1, type: Livekit.VideoConfiguration
@@ -784,8 +727,7 @@ defmodule Livekit.ClientConfiguration do
 end
 
 defmodule Livekit.VideoConfiguration do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :hardware_encoder, 1,
@@ -795,8 +737,7 @@ defmodule Livekit.VideoConfiguration do
 end
 
 defmodule Livekit.DisabledCodecs do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :codecs, 1, repeated: true, type: Livekit.Codec
@@ -804,8 +745,7 @@ defmodule Livekit.DisabledCodecs do
 end
 
 defmodule Livekit.RTPDrift do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :start_time, 1, type: Google.Protobuf.Timestamp, json_name: "startTime"
@@ -820,8 +760,7 @@ defmodule Livekit.RTPDrift do
 end
 
 defmodule Livekit.RTPStats.GapHistogramEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :int32
@@ -829,8 +768,7 @@ defmodule Livekit.RTPStats.GapHistogramEntry do
 end
 
 defmodule Livekit.RTPStats do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :start_time, 1, type: Google.Protobuf.Timestamp, json_name: "startTime"
@@ -887,8 +825,7 @@ defmodule Livekit.RTPStats do
 end
 
 defmodule Livekit.RTCPSenderReportState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :rtp_timestamp, 1, type: :uint32, json_name: "rtpTimestamp"
@@ -901,8 +838,7 @@ defmodule Livekit.RTCPSenderReportState do
 end
 
 defmodule Livekit.RTPForwarderState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :codec_munger, 0
@@ -922,8 +858,7 @@ defmodule Livekit.RTPForwarderState do
 end
 
 defmodule Livekit.RTPMungerState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :ext_last_sequence_number, 1, type: :uint64, json_name: "extLastSequenceNumber"
@@ -939,8 +874,7 @@ defmodule Livekit.RTPMungerState do
 end
 
 defmodule Livekit.VP8MungerState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :ext_last_picture_id, 1, type: :int32, json_name: "extLastPictureId"
@@ -953,8 +887,7 @@ defmodule Livekit.VP8MungerState do
 end
 
 defmodule Livekit.TimedVersion do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :unix_micro, 1, type: :int64, json_name: "unixMicro"
@@ -962,8 +895,7 @@ defmodule Livekit.TimedVersion do
 end
 
 defmodule Livekit.DataStream.TextHeader do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :operation_type, 1,
@@ -978,16 +910,14 @@ defmodule Livekit.DataStream.TextHeader do
 end
 
 defmodule Livekit.DataStream.ByteHeader do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :name, 1, type: :string
 end
 
 defmodule Livekit.DataStream.Header.AttributesEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :string
@@ -995,8 +925,7 @@ defmodule Livekit.DataStream.Header.AttributesEntry do
 end
 
 defmodule Livekit.DataStream.Header do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :content_header, 0
@@ -1019,8 +948,7 @@ defmodule Livekit.DataStream.Header do
 end
 
 defmodule Livekit.DataStream.Chunk do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :stream_id, 1, type: :string, json_name: "streamId"
@@ -1031,8 +959,7 @@ defmodule Livekit.DataStream.Chunk do
 end
 
 defmodule Livekit.DataStream.Trailer.AttributesEntry do
-  @moduledoc false
-
+  
   use Protobuf, map: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :key, 1, type: :string
@@ -1040,8 +967,7 @@ defmodule Livekit.DataStream.Trailer.AttributesEntry do
 end
 
 defmodule Livekit.DataStream.Trailer do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :stream_id, 1, type: :string, json_name: "streamId"
@@ -1054,14 +980,12 @@ defmodule Livekit.DataStream.Trailer do
 end
 
 defmodule Livekit.DataStream do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 end
 
 defmodule Livekit.FilterParams do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :include_events, 1, repeated: true, type: :string, json_name: "includeEvents"
@@ -1069,8 +993,7 @@ defmodule Livekit.FilterParams do
 end
 
 defmodule Livekit.WebhookConfig do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :url, 1, type: :string
@@ -1079,8 +1002,7 @@ defmodule Livekit.WebhookConfig do
 end
 
 defmodule Livekit.SubscribedAudioCodec do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :codec, 1, type: :string

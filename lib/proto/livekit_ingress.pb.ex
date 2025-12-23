@@ -1,6 +1,5 @@
 defmodule Livekit.IngressInput do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :RTMP_INPUT, 0
@@ -9,8 +8,7 @@ defmodule Livekit.IngressInput do
 end
 
 defmodule Livekit.IngressAudioEncodingPreset do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :OPUS_STEREO_96KBPS, 0
@@ -18,8 +16,7 @@ defmodule Livekit.IngressAudioEncodingPreset do
 end
 
 defmodule Livekit.IngressVideoEncodingPreset do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :H264_720P_30FPS_3_LAYERS, 0
@@ -35,8 +32,7 @@ defmodule Livekit.IngressVideoEncodingPreset do
 end
 
 defmodule Livekit.IngressState.Status do
-  @moduledoc false
-
+  
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :ENDPOINT_INACTIVE, 0
@@ -47,8 +43,7 @@ defmodule Livekit.IngressState.Status do
 end
 
 defmodule Livekit.CreateIngressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :input_type, 1, type: Livekit.IngressInput, json_name: "inputType", enum: true
@@ -71,8 +66,7 @@ defmodule Livekit.CreateIngressRequest do
 end
 
 defmodule Livekit.IngressAudioOptions do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :encoding_options, 0
@@ -84,8 +78,7 @@ defmodule Livekit.IngressAudioOptions do
 end
 
 defmodule Livekit.IngressVideoOptions do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   oneof :encoding_options, 0
@@ -97,8 +90,7 @@ defmodule Livekit.IngressVideoOptions do
 end
 
 defmodule Livekit.IngressAudioEncodingOptions do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :audio_codec, 1, type: Livekit.AudioCodec, json_name: "audioCodec", enum: true
@@ -108,8 +100,7 @@ defmodule Livekit.IngressAudioEncodingOptions do
 end
 
 defmodule Livekit.IngressVideoEncodingOptions do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :video_codec, 1, type: Livekit.VideoCodec, json_name: "videoCodec", enum: true
@@ -118,8 +109,7 @@ defmodule Livekit.IngressVideoEncodingOptions do
 end
 
 defmodule Livekit.IngressInfo do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :ingress_id, 1, type: :string, json_name: "ingressId"
@@ -146,8 +136,7 @@ defmodule Livekit.IngressInfo do
 end
 
 defmodule Livekit.IngressState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :status, 1, type: Livekit.IngressState.Status, enum: true
@@ -163,8 +152,7 @@ defmodule Livekit.IngressState do
 end
 
 defmodule Livekit.InputVideoState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :mime_type, 1, type: :string, json_name: "mimeType"
@@ -175,8 +163,7 @@ defmodule Livekit.InputVideoState do
 end
 
 defmodule Livekit.InputAudioState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :mime_type, 1, type: :string, json_name: "mimeType"
@@ -186,8 +173,7 @@ defmodule Livekit.InputAudioState do
 end
 
 defmodule Livekit.UpdateIngressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :ingress_id, 1, type: :string, json_name: "ingressId"
@@ -214,8 +200,7 @@ defmodule Livekit.UpdateIngressRequest do
 end
 
 defmodule Livekit.ListIngressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :room_name, 1, type: :string, json_name: "roomName"
@@ -223,16 +208,14 @@ defmodule Livekit.ListIngressRequest do
 end
 
 defmodule Livekit.ListIngressResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :items, 1, repeated: true, type: Livekit.IngressInfo
 end
 
 defmodule Livekit.DeleteIngressRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :ingress_id, 1, type: :string, json_name: "ingressId"

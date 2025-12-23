@@ -1,9 +1,44 @@
 defmodule ExLivekit.TokenVerifier do
+  @moduledoc """
+  Module for verifying LiveKit access tokens.
+
+  This module provides functionality to verify LiveKit access tokens.
+  It handles token verification, signature verification, and claim grant conversion.
+  """
+
   alias ExLivekit.Config
   alias ExLivekit.Grants.{ClaimGrant, InferenceGrant, ObservabilityGrant, SIPGrant, VideoGrant}
 
-  @spec verify(token :: binary(), opts :: Keyword.t()) ::
-          {:ok, map(), ClaimGrant.t()} | {:error, :invalid_token} | {:error, :invalid_issuer}
+  @type verify_opts :: [
+          verify_signature: boolean(),
+          api_key: binary(),
+          api_secret: binary()
+        ]
+
+  @doc """
+  Verifies a LiveKit access token.
+
+  ## Examples
+
+  ```elixir
+  {:ok, jwt_claims, claims_grant} = ExLivekit.TokenVerifier.verify(token)
+  ```
+
+  options:
+  - verify_signature: true to verify the signature of the token. Default is false.
+  - api_key: the API key to use for verification. If not provided, it will use the api_key from the config.
+  - api_secret: the API secret to use for verification. If not provided, it will use the api_secret from the config.
+
+  ```elixir
+  {:ok, jwt_claims, claims_grant} = ExLivekit.TokenVerifier.verify(token, verify_signature: true, api_key: "api_key", api_secret: "api_secret")
+  {:ok, jwt_claims, claims_grant} = ExLivekit.TokenVerifier.verify(token, verify_signature: true, api_key: "api_key")
+  {:ok, jwt_claims, claims_grant} = ExLivekit.TokenVerifier.verify(token, verify_signature: true, api_secret: "api_secret")
+  ```
+  """
+  @spec verify(jwt_token :: binary(), verify_opts()) ::
+          {:ok, jwt_claims :: map(), claims_grant :: ClaimGrant.t()}
+          | {:error, :invalid_token}
+          | {:error, :invalid_issuer}
   def verify(token, opts \\ []) do
     api_secret = Config.fetch_from_opts!(:api_secret, opts)
     signer = Joken.Signer.create("HS256", api_secret)

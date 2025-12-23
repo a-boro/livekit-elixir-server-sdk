@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.CompileProto do
+defmodule Mix.Tasks.Compile.Proto do
   @moduledoc false
   @shortdoc "Compiles the protocol buffers"
 
@@ -27,6 +27,20 @@ defmodule Mix.Tasks.CompileProto do
     |> Enum.map(&exec_sys_cmd/1)
     |> Enum.map(&inspect/1)
     |> Enum.each(&IO.puts/1)
+
+    make_compiled_proto_public()
+  end
+
+  defp make_compiled_proto_public do
+    Path.wildcard("#{@output_dir}/**/*.pb.ex")
+    |> Enum.each(fn file_path ->
+      content =
+        file_path
+        |> File.stream!()
+        |> Enum.map(&String.replace(&1, "@moduledoc false\n", ""))
+
+      File.write!(file_path, content)
+    end)
   end
 
   defp exec_sys_cmd(proto_file_path) do

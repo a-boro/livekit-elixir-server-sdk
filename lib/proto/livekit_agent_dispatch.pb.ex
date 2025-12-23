@@ -1,6 +1,5 @@
 defmodule Livekit.CreateAgentDispatchRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :agent_name, 1, type: :string, json_name: "agentName"
@@ -9,8 +8,7 @@ defmodule Livekit.CreateAgentDispatchRequest do
 end
 
 defmodule Livekit.RoomAgentDispatch do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :agent_name, 1, type: :string, json_name: "agentName"
@@ -18,8 +16,7 @@ defmodule Livekit.RoomAgentDispatch do
 end
 
 defmodule Livekit.DeleteAgentDispatchRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :dispatch_id, 1, type: :string, json_name: "dispatchId"
@@ -27,8 +24,7 @@ defmodule Livekit.DeleteAgentDispatchRequest do
 end
 
 defmodule Livekit.ListAgentDispatchRequest do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :dispatch_id, 1, type: :string, json_name: "dispatchId"
@@ -36,8 +32,7 @@ defmodule Livekit.ListAgentDispatchRequest do
 end
 
 defmodule Livekit.ListAgentDispatchResponse do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :agent_dispatches, 1,
@@ -47,8 +42,7 @@ defmodule Livekit.ListAgentDispatchResponse do
 end
 
 defmodule Livekit.AgentDispatch do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :id, 1, type: :string
@@ -59,8 +53,7 @@ defmodule Livekit.AgentDispatch do
 end
 
 defmodule Livekit.AgentDispatchState do
-  @moduledoc false
-
+  
   use Protobuf, protoc_gen_elixir_version: "0.15.0", syntax: :proto3
 
   field :jobs, 1, repeated: true, type: Livekit.Job

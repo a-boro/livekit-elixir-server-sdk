@@ -1,4 +1,6 @@
 defmodule ExLivekit.Utils do
+  @moduledoc false
+
   @spec to_http_url(binary()) :: binary()
   def to_http_url(url) do
     case URI.parse(url).scheme do
