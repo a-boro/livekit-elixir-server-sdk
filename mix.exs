@@ -82,7 +82,8 @@ defmodule ExLivekit.MixProject do
           ExLivekit.Client,
           ExLivekit.Client.Finch,
           ExLivekit.Client.Hackney,
-          ExLivekit.Client.HTTPClient
+          ExLivekit.Client.HTTPClient,
+          ExLivekit.Client.Error
         ],
         "Livekit Protobufs": [
           ~r"^Livekit\.*"

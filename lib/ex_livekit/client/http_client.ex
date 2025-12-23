@@ -22,14 +22,37 @@ defmodule ExLivekit.Client.HTTPClient do
 
   Errors should return:
   ```elixir
-  {:error, term()}
+  {:error, %{reason: client_error_reason()}}
   ```
   """
 
   @type headers() :: [{String.t(), String.t()}]
+  @type client_error_reason ::
+          :connection_closed
+          | :checkout_timeout
+          | :econnrefused
+          | :disconnected
+          | :timeout
+          | :unknown
 
   @callback child_spec() :: :supervisor.child_spec()
   @callback post(url :: String.t(), payload :: binary(), headers :: headers()) ::
               {:ok, %{status: integer(), headers: headers(), body: binary()}}
-              | {:error, term()}
+              | {:error, %{reason: client_error_reason()}}
+
+  @doc false
+  defmacro __using__(_opts) do
+    quote do
+      @client_error_reasons [
+        :connection_closed,
+        :checkout_timeout,
+        :econnrefused,
+        :disconnected,
+        :timeout,
+        :unknown
+      ]
+
+      @behaviour ExLivekit.Client.HTTPClient
+    end
+  end
 end
