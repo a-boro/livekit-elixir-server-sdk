@@ -39,7 +39,7 @@ defmodule ExLivekit.MixProject do
       # data formats
       {:joken, "~> 2.6"},
       {:jason, "~> 1.4"},
-      {:protobuf, "~> 0.14.1"},
+      {:protobuf, "~> 0.15.0"},
 
       # devtools
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
