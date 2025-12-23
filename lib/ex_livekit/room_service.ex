@@ -6,6 +6,7 @@ defmodule ExLivekit.RoomService do
   """
 
   alias ExLivekit.Client
+  alias ExLivekit.Client.Error
   alias ExLivekit.Grants.VideoGrant
 
   alias Livekit.{
@@ -33,8 +34,8 @@ defmodule ExLivekit.RoomService do
   @type opts :: Keyword.t()
   @type room_name :: String.t()
 
-  @spec create_room(Client.t(), room_name()) :: {:ok, Room.t()} | {:error, term()}
-  @spec create_room(Client.t(), room_name(), opts()) :: {:ok, Room.t()} | {:error, term()}
+  @spec create_room(Client.t(), room_name()) :: {:ok, Room.t()} | {:error, Error.t()}
+  @spec create_room(Client.t(), room_name(), opts()) :: {:ok, Room.t()} | {:error, Error.t()}
   def create_room(%Client{} = client, room_name, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_create: true})
 
@@ -70,7 +71,7 @@ defmodule ExLivekit.RoomService do
   {:ok, rooms} = ExLivekit.RoomService.list_rooms(client)
   ```
   """
-  @spec list_rooms(Client.t(), opts()) :: {:ok, ListRoomsResponse.t()} | {:error, term()}
+  @spec list_rooms(Client.t(), opts()) :: {:ok, ListRoomsResponse.t()} | {:error, Error.t()}
   def list_rooms(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_list: true})
     payload = %ListRoomsRequest{names: opts[:names] || []}
@@ -90,7 +91,7 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.delete_room(client, "room_name")
   ```
   """
-  @spec delete_room(Client.t(), room_name()) :: :ok | {:error, term()}
+  @spec delete_room(Client.t(), room_name()) :: :ok | {:error, Error.t()}
   def delete_room(%Client{} = client, room_name) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_create: true})
     payload = %DeleteRoomRequest{room: room_name}
@@ -111,7 +112,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec update_room_metadata(Client.t(), room_name(), String.t()) ::
-          {:ok, Livekit.Room.t()} | {:error, term()}
+          {:ok, Livekit.Room.t()} | {:error, Error.t()}
   def update_room_metadata(%Client{} = client, room_name, metadata) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -134,7 +135,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec list_participants(Client.t(), room_name()) ::
-          {:ok, ListParticipantsResponse.t()} | {:error, term()}
+          {:ok, ListParticipantsResponse.t()} | {:error, Error.t()}
   def list_participants(%Client{} = client, room_name) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -157,7 +158,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec get_participant(Client.t(), room_name(), String.t()) ::
-          {:ok, ParticipantInfo.t()} | {:error, term()}
+          {:ok, ParticipantInfo.t()} | {:error, Error.t()}
   def get_participant(%Client{} = client, room_name, identity) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -179,7 +180,7 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.remove_participant(client, "room_name", "participant_identity")
   ```
   """
-  @spec remove_participant(Client.t(), room_name(), String.t()) :: :ok | {:error, term()}
+  @spec remove_participant(Client.t(), room_name(), String.t()) :: :ok | {:error, Error.t()}
   def remove_participant(%Client{} = client, room_name, identity) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -203,7 +204,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec forward_participant(Client.t(), room_name(), String.t(), String.t()) ::
-          :ok | {:error, term()}
+          :ok | {:error, Error.t()}
   def forward_participant(%Client{} = client, room_name, identity, destination_room) do
     auth_headers =
       Client.auth_headers(client,
@@ -237,7 +238,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec move_participant(Client.t(), room_name(), String.t(), String.t()) ::
-          :ok | {:error, term()}
+          :ok | {:error, Error.t()}
   def move_participant(%Client{} = client, room_name, identity, destination_room) do
     auth_headers =
       Client.auth_headers(client,
@@ -270,7 +271,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec mute_published_track(Client.t(), room_name(), String.t(), String.t(), boolean()) ::
-          {:ok, Livekit.TrackInfo.t()} | {:error, term()}
+          {:ok, Livekit.TrackInfo.t()} | {:error, Error.t()}
   def mute_published_track(%Client{} = client, room_name, identity, track_sid, muted) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -298,7 +299,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec update_participant(Client.t(), room_name(), String.t(), opts()) ::
-          {:ok, ParticipantInfo.t()} | {:error, term()}
+          {:ok, ParticipantInfo.t()} | {:error, Error.t()}
   def update_participant(%Client{} = client, room_name, identity, opts \\ []) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -340,7 +341,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec update_subscriptions(Client.t(), room_name(), String.t(), opts()) ::
-          :ok | {:error, term()}
+          :ok | {:error, Error.t()}
   def update_subscriptions(%Client{} = client, room_name, identity, opts \\ []) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -373,7 +374,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec send_data(Client.t(), room_name(), binary(), Livekit.DataPacket.Kind.t(), opts()) ::
-          :ok | {:error, term()}
+          :ok | {:error, Error.t()}
   def send_data(%Client{} = client, room_name, data, kind, opts \\ []) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})

@@ -1,5 +1,6 @@
 defmodule ExLivekit.EgressService do
   alias ExLivekit.Client
+  alias ExLivekit.Client.Error
   alias ExLivekit.Grants.VideoGrant
 
   alias Livekit.{
@@ -45,7 +46,7 @@ defmodule ExLivekit.EgressService do
             ]
 
   @spec start_room_composite_egress(Client.t(), room_name(), output(), opts()) ::
-          {:ok, EgressInfo.t()} | {:error, term()}
+          {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_room_composite_egress(%Client{} = client, room_name, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -70,7 +71,7 @@ defmodule ExLivekit.EgressService do
   end
 
   @spec start_participant_egress(Client.t(), room_name(), String.t(), output(), opts()) ::
-          {:ok, EgressInfo.t()} | {:error, term()}
+          {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_participant_egress(%Client{} = client, room_name, identity, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -93,7 +94,7 @@ defmodule ExLivekit.EgressService do
   end
 
   @spec start_track_composite_egress(Client.t(), room_name(), output(), opts()) ::
-          {:ok, EgressInfo.t()} | {:error, term()}
+          {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_track_composite_egress(%Client{} = client, room_name, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -120,7 +121,7 @@ defmodule ExLivekit.EgressService do
           room_name(),
           String.t(),
           Livekit.DirectFileOutput.t() | String.t()
-        ) :: {:ok, EgressInfo.t()} | {:error, term()}
+        ) :: {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_track_egress(%Client{} = client, room_name, track_id, output) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -149,7 +150,7 @@ defmodule ExLivekit.EgressService do
   end
 
   @spec start_web_egress(Client.t(), String.t(), output(), opts()) ::
-          {:ok, EgressInfo.t()} | {:error, term()}
+          {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_web_egress(%Client{} = client, url, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -173,7 +174,7 @@ defmodule ExLivekit.EgressService do
   end
 
   @spec update_layout(Client.t(), egress_id(), String.t()) ::
-          {:ok, EgressInfo.t()} | {:error, term()}
+          {:ok, EgressInfo.t()} | {:error, Error.t()}
   def update_layout(%Client{} = client, egress_id, layout) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -189,7 +190,7 @@ defmodule ExLivekit.EgressService do
   end
 
   @spec update_stream(Client.t(), egress_id(), opts()) ::
-          {:ok, EgressInfo.t()} | {:error, term()}
+          {:ok, EgressInfo.t()} | {:error, Error.t()}
   def update_stream(%Client{} = client, egress_id, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -206,7 +207,7 @@ defmodule ExLivekit.EgressService do
   end
 
   @spec list_egress(Client.t(), opts()) ::
-          {:ok, ListEgressResponse.t()} | {:error, term()}
+          {:ok, ListEgressResponse.t()} | {:error, Error.t()}
   def list_egress(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -222,7 +223,7 @@ defmodule ExLivekit.EgressService do
     end
   end
 
-  @spec stop_egress(Client.t(), egress_id()) :: {:ok, EgressInfo.t()} | {:error, term()}
+  @spec stop_egress(Client.t(), egress_id()) :: {:ok, EgressInfo.t()} | {:error, Error.t()}
   def stop_egress(%Client{} = client, egress_id) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 

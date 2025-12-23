@@ -1,5 +1,6 @@
 defmodule ExLivekit.IngressService do
   alias ExLivekit.Client
+  alias ExLivekit.Client.Error
   alias ExLivekit.Grants.VideoGrant
 
   alias Livekit.{
@@ -16,7 +17,7 @@ defmodule ExLivekit.IngressService do
   @type opts :: Keyword.t()
   @type ingress_id :: String.t()
 
-  @spec create_ingress(Client.t(), opts()) :: {:ok, IngressInfo.t()} | {:error, term()}
+  @spec create_ingress(Client.t(), opts()) :: {:ok, IngressInfo.t()} | {:error, Error.t()}
   def create_ingress(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{ingress_admin: true})
 
@@ -36,7 +37,7 @@ defmodule ExLivekit.IngressService do
     end
   end
 
-  @spec update_ingress(Client.t(), opts()) :: {:ok, IngressInfo.t()} | {:error, term()}
+  @spec update_ingress(Client.t(), opts()) :: {:ok, IngressInfo.t()} | {:error, Error.t()}
   def update_ingress(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{ingress_admin: true})
 
@@ -56,7 +57,7 @@ defmodule ExLivekit.IngressService do
   end
 
   @spec list_ingresses(Client.t(), opts()) ::
-          {:ok, ListIngressResponse.t()} | {:error, term()}
+          {:ok, ListIngressResponse.t()} | {:error, Error.t()}
   def list_ingresses(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{ingress_admin: true})
 
@@ -68,7 +69,7 @@ defmodule ExLivekit.IngressService do
     end
   end
 
-  @spec delete_ingress(Client.t(), ingress_id()) :: {:ok, IngressInfo.t()} | {:error, term()}
+  @spec delete_ingress(Client.t(), ingress_id()) :: {:ok, IngressInfo.t()} | {:error, Error.t()}
   def delete_ingress(%Client{} = client, ingress_id) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{ingress_admin: true})
 
