@@ -2,20 +2,21 @@ defmodule ExLivekit.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/a-boro/livekit-elixir-server-sdk"
-  @version "0.0.1"
+  @version "0.1.0"
 
   def project do
     [
       app: :ex_livekit,
-      version: @version,
       elixir: "~> 1.17",
-      source_url: @source_url,
-      start_permanent: Mix.env() == :prod,
       dialyzer: [plt_add_apps: [:mix]],
       deps: deps(),
       description: description(),
       docs: docs(),
-      name: "ExLivekit"
+      name: "ExLivekit",
+      package: package(),
+      source_url: @source_url,
+      start_permanent: Mix.env() == :prod,
+      version: @version
     ]
   end
 
@@ -89,6 +90,17 @@ defmodule ExLivekit.MixProject do
           ~r"^Livekit\.*"
         ]
       ]
+    ]
+  end
+
+  defp package do
+    [
+      name: "ex_livekit",
+      files: ["lib", "mix.exs", ".formatter.exs", "README.md", "LICENSE"],
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => @source_url
+      }
     ]
   end
 end
