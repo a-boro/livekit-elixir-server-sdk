@@ -1,5 +1,6 @@
 defmodule ExLivekit.AgentDispatchService do
   alias ExLivekit.Client
+  alias ExLivekit.Client.Error
   alias ExLivekit.Grants.VideoGrant
 
   alias Livekit.{
@@ -13,7 +14,7 @@ defmodule ExLivekit.AgentDispatchService do
   @svc "AgentDispatchService"
 
   @spec create_dispatch(Client.t(), String.t(), String.t(), String.t() | nil) ::
-          {:ok, AgentDispatch.t()} | {:error, term()}
+          {:ok, AgentDispatch.t()} | {:error, Error.t()}
   def create_dispatch(%Client{} = client, room_name, agent_name, metadata \\ nil) do
     payload = %CreateAgentDispatchRequest{
       agent_name: agent_name,
@@ -28,7 +29,7 @@ defmodule ExLivekit.AgentDispatchService do
   end
 
   @spec delete_dispatch(Client.t(), String.t(), String.t()) ::
-          {:ok, AgentDispatch.t()} | {:error, term()}
+          {:ok, AgentDispatch.t()} | {:error, Error.t()}
   def delete_dispatch(%Client{} = client, dispatch_id, room_name) do
     payload = %DeleteAgentDispatchRequest{
       dispatch_id: dispatch_id,
@@ -42,7 +43,7 @@ defmodule ExLivekit.AgentDispatchService do
   end
 
   @spec get_dispatch(Client.t(), String.t(), String.t()) ::
-          {:ok, AgentDispatch.t()} | {:error, term()}
+          {:ok, AgentDispatch.t()} | {:error, Error.t()}
   def get_dispatch(%Client{} = client, dispatch_id, room_name) do
     payload = %ListAgentDispatchRequest{
       dispatch_id: dispatch_id,
@@ -64,7 +65,7 @@ defmodule ExLivekit.AgentDispatchService do
   end
 
   @spec list_dispatch(Client.t(), String.t()) ::
-          {:ok, ListAgentDispatchResponse.t()} | {:error, term()}
+          {:ok, ListAgentDispatchResponse.t()} | {:error, Error.t()}
   def list_dispatch(%Client{} = client, room_name) do
     payload = %ListAgentDispatchRequest{
       room: room_name

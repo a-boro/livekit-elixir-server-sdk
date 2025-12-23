@@ -6,6 +6,7 @@ defmodule ExLivekit.RoomService do
   """
 
   alias ExLivekit.Client
+  alias ExLivekit.Client.Error
   alias ExLivekit.Grants.VideoGrant
 
   alias Livekit.{
@@ -32,9 +33,59 @@ defmodule ExLivekit.RoomService do
 
   @type opts :: Keyword.t()
   @type room_name :: String.t()
+  @type participant_identity :: String.t()
 
-  @spec create_room(Client.t(), room_name()) :: {:ok, Room.t()} | {:error, term()}
-  @spec create_room(Client.t(), room_name(), opts()) :: {:ok, Room.t()} | {:error, term()}
+  @type create_room_opts :: [
+          room_preset: String.t(),
+          empty_timeout: integer(),
+          departure_timeout: integer(),
+          max_participants: integer(),
+          node_id: String.t(),
+          metadata: String.t(),
+          egress: Livekit.RoomEgress.t(),
+          min_playout_delay: integer(),
+          max_playout_delay: integer(),
+          sync_streams: boolean(),
+          replay_enabled: boolean(),
+          agents: [Livekit.RoomAgentDispatch.t()]
+        ]
+
+  @doc """
+  Creates a new room.
+
+  Options:
+  - room_preset: the preset to use for the room
+  - empty_timeout: the timeout for the room to be empty in seconds
+  - departure_timeout: the timeout for the room to be departed in seconds
+  - max_participants: the maximum number of participants in the room
+  - node_id: the node id to use for the room creation. Only for advanced users.
+  - metadata: the metadata to use for the room
+  - egress: the egress to use for the room. See `Livekit.RoomEgress` for more information
+  - min_playout_delay: the minimum playout delay for the room in milliseconds
+  - max_playout_delay: the maximum playout delay for the room in milliseconds
+  - sync_streams: whether to sync streams for the room
+  - replay_enabled: whether to enable replay for the room
+  - agents: the agents to use for the room. See `Livekit.RoomAgent` for more information
+
+  ## Examples
+
+  ```elixir
+  {:ok, room} = ExLivekit.RoomService.create_room(client, "room_name")
+  {:ok, room} = ExLivekit.RoomService.create_room(client, "room_name",
+    room_preset: "high",
+    empty_timeout: 10,
+    departure_timeout: 20,
+    max_participants: 10,
+    node_id: "test_node",
+    metadata: "test_metadata",
+    agents: [%Livekit.RoomAgentDispatch{agent_name: "agent_name", metadata: "metadata"}]
+  )
+  ```
+
+  """
+  @spec create_room(Client.t(), room_name()) :: {:ok, Room.t()} | {:error, Error.t()}
+  @spec create_room(Client.t(), room_name(), create_room_opts()) ::
+          {:ok, Room.t()} | {:error, Error.t()}
   def create_room(%Client{} = client, room_name, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_create: true})
 
@@ -61,19 +112,27 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @type list_rooms_opts :: [
+          names: [room_name()]
+        ]
   @doc """
   Lists rooms that are active on the server.
+
+  Options:
+  - names: list of room names to filter by
 
   ## Examples
 
   ```elixir
   {:ok, rooms} = ExLivekit.RoomService.list_rooms(client)
+  {:ok, rooms} = ExLivekit.RoomService.list_rooms(client, names: ["room1", "room2"])
   ```
   """
-  @spec list_rooms(Client.t(), opts()) :: {:ok, ListRoomsResponse.t()} | {:error, term()}
+  @spec list_rooms(Client.t(), list_rooms_opts()) ::
+          {:ok, ListRoomsResponse.t()} | {:error, Error.t()}
   def list_rooms(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_list: true})
-    payload = %ListRoomsRequest{names: opts[:names] || []}
+    payload = %ListRoomsRequest{names: Keyword.get(opts, :names, [])}
 
     case Client.request(client, @svc, "ListRooms", payload, auth_headers) do
       {:ok, body} -> {:ok, ListRoomsResponse.decode(body)}
@@ -90,7 +149,7 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.delete_room(client, "room_name")
   ```
   """
-  @spec delete_room(Client.t(), room_name()) :: :ok | {:error, term()}
+  @spec delete_room(Client.t(), room_name()) :: :ok | {:error, Error.t()}
   def delete_room(%Client{} = client, room_name) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_create: true})
     payload = %DeleteRoomRequest{room: room_name}
@@ -111,7 +170,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec update_room_metadata(Client.t(), room_name(), String.t()) ::
-          {:ok, Livekit.Room.t()} | {:error, term()}
+          {:ok, Livekit.Room.t()} | {:error, Error.t()}
   def update_room_metadata(%Client{} = client, room_name, metadata) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -134,7 +193,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec list_participants(Client.t(), room_name()) ::
-          {:ok, ListParticipantsResponse.t()} | {:error, term()}
+          {:ok, ListParticipantsResponse.t()} | {:error, Error.t()}
   def list_participants(%Client{} = client, room_name) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -156,8 +215,8 @@ defmodule ExLivekit.RoomService do
   {:ok, participant} = ExLivekit.RoomService.get_participant(client, "room_name", "participant_identity")
   ```
   """
-  @spec get_participant(Client.t(), room_name(), String.t()) ::
-          {:ok, ParticipantInfo.t()} | {:error, term()}
+  @spec get_participant(Client.t(), room_name(), participant_identity()) ::
+          {:ok, ParticipantInfo.t()} | {:error, Error.t()}
   def get_participant(%Client{} = client, room_name, identity) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -179,7 +238,8 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.remove_participant(client, "room_name", "participant_identity")
   ```
   """
-  @spec remove_participant(Client.t(), room_name(), String.t()) :: :ok | {:error, term()}
+  @spec remove_participant(Client.t(), room_name(), participant_identity()) ::
+          :ok | {:error, Error.t()}
   def remove_participant(%Client{} = client, room_name, identity) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -202,8 +262,8 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.forward_participant(client, "room_name", "participant_identity", "destination_room")
   ```
   """
-  @spec forward_participant(Client.t(), room_name(), String.t(), String.t()) ::
-          :ok | {:error, term()}
+  @spec forward_participant(Client.t(), room_name(), participant_identity(), room_name()) ::
+          :ok | {:error, Error.t()}
   def forward_participant(%Client{} = client, room_name, identity, destination_room) do
     auth_headers =
       Client.auth_headers(client,
@@ -236,8 +296,8 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.move_participant(client, "room_name", "participant_identity", "destination_room")
   ```
   """
-  @spec move_participant(Client.t(), room_name(), String.t(), String.t()) ::
-          :ok | {:error, term()}
+  @spec move_participant(Client.t(), room_name(), participant_identity(), room_name()) ::
+          :ok | {:error, Error.t()}
   def move_participant(%Client{} = client, room_name, identity, destination_room) do
     auth_headers =
       Client.auth_headers(client,
@@ -269,8 +329,14 @@ defmodule ExLivekit.RoomService do
   {:ok, track} = ExLivekit.RoomService.mute_published_track(client, "room_name", "participant_identity", "track_sid", true)
   ```
   """
-  @spec mute_published_track(Client.t(), room_name(), String.t(), String.t(), boolean()) ::
-          {:ok, Livekit.TrackInfo.t()} | {:error, term()}
+  @spec mute_published_track(
+          Client.t(),
+          room_name(),
+          participant_identity(),
+          String.t(),
+          boolean()
+        ) ::
+          {:ok, Livekit.TrackInfo.t()} | {:error, Error.t()}
   def mute_published_track(%Client{} = client, room_name, identity, track_sid, muted) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -288,17 +354,41 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @type update_participant_opts :: [
+          metadata: String.t(),
+          permission: Livekit.ParticipantPermission.t(),
+          name: String.t(),
+          attributes: map()
+        ]
   @doc """
   Updates the metadata of a participant in a room.
+
+  Options:
+  - metadata: the metadata to update
+  - permission: the permission to update
+  - name: the name to update
+  - attributes: the attributes to update
 
   ## Examples
 
   ```elixir
   {:ok, participant} = ExLivekit.RoomService.update_participant(client, "room_name", "participant_identity", "new_metadata")
+
+  {:ok, participant} = ExLivekit.RoomService.update_participant(client, "room_name", "participant_identity",
+    metadata: "new_metadata",
+    permission: %Livekit.ParticipantPermission{can_subscribe: true, can_publish: true, can_publish_data: true},
+    name: "new_name",
+    attributes: %{key1: "value1", key2: "value2"}
+  )
   ```
   """
-  @spec update_participant(Client.t(), room_name(), String.t(), opts()) ::
-          {:ok, ParticipantInfo.t()} | {:error, term()}
+  @spec update_participant(
+          Client.t(),
+          room_name(),
+          participant_identity(),
+          update_participant_opts()
+        ) ::
+          {:ok, ParticipantInfo.t()} | {:error, Error.t()}
   def update_participant(%Client{} = client, room_name, identity, opts \\ []) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -325,6 +415,12 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @type update_subscriptions_opts :: [
+          track_sids: [String.t()],
+          subscribe: boolean(),
+          participant_tracks: [Livekit.ParticipantTracks.t()]
+        ]
+
   @doc """
   Updates the subscriptions of a participant in a room.
 
@@ -339,8 +435,13 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.update_subscriptions(client, "room_name", "participant_identity", "track_sid")
   ```
   """
-  @spec update_subscriptions(Client.t(), room_name(), String.t(), opts()) ::
-          :ok | {:error, term()}
+  @spec update_subscriptions(
+          Client.t(),
+          room_name(),
+          participant_identity(),
+          update_subscriptions_opts()
+        ) ::
+          :ok | {:error, Error.t()}
   def update_subscriptions(%Client{} = client, room_name, identity, opts \\ []) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -359,6 +460,10 @@ defmodule ExLivekit.RoomService do
     end
   end
 
+  @type send_data_opts :: [
+          destination_identities: [String.t()],
+          topic: String.t()
+        ]
   @doc """
   Sends data to a room.
 
@@ -372,8 +477,14 @@ defmodule ExLivekit.RoomService do
   :ok = ExLivekit.RoomService.send_data(client, "room_name", "data", "kind", destination_identities: ["identity1", "identity2"], topic: "topic")
   ```
   """
-  @spec send_data(Client.t(), room_name(), binary(), Livekit.DataPacket.Kind.t(), opts()) ::
-          :ok | {:error, term()}
+  @spec send_data(
+          Client.t(),
+          room_name(),
+          binary(),
+          Livekit.DataPacket.Kind.t(),
+          send_data_opts()
+        ) ::
+          :ok | {:error, Error.t()}
   def send_data(%Client{} = client, room_name, data, kind, opts \\ []) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})

@@ -2,6 +2,8 @@
 
 <!-- MDOC !-->
 
+> **Note:** This is not an official LiveKit SDK. This is a community-maintained Elixir client. While this is an early version, it is currently being used in production by the maintainer in a large-scale system working with LiveKit. Use on your own risk.
+
 ## Getting Started
 
 Add `ex_livekit` to your dependencies. By default, `hackney` is used as the HTTP client:
@@ -16,6 +18,15 @@ end
 ```
 
 If you prefer to use `finch` instead of `hackney`, see the [Http Client Configuration](#http-client-configuration) section below.
+
+### Naming Conventions
+
+This library uses two types of module names:
+
+- **`ExLivekit`** - Modules that are part of this library's logic (e.g., `ExLivekit.Client`, `ExLivekit.AccessToken`, `ExLivekit.RoomService`)
+- **`Livekit`** - Modules generated from Protobuf definitions (e.g., `Livekit.Room`, `Livekit.Participant`, `Livekit.StreamOutput`)
+
+The `Livekit` modules contain the data structures and types defined in the LiveKit protocol buffers, while `ExLivekit` modules contain the library's implementation and business logic.
 
 ## Configuration
 
