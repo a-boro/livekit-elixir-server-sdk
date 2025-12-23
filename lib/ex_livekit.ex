@@ -1,6 +1,7 @@
 defmodule ExLivekit do
   use Application
 
+  @doc false
   def start(_type, _args) do
     children = [
       http_client_child_spec()

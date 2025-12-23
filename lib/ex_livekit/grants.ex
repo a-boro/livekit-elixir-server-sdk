@@ -1,5 +1,14 @@
 defmodule ExLivekit.Grants do
   defmodule VideoGrant do
+    @moduledoc """
+    Video grant is used to grant permissions for video related actions.
+
+    ## Examples
+
+    ```elixir
+    video_grant = %ExLivekit.Grants.VideoGrant{room_create: true}
+    ```
+    """
     defstruct [
       :room_create,
       :room_list,
@@ -60,6 +69,15 @@ defmodule ExLivekit.Grants do
   end
 
   defmodule SIPGrant do
+    @moduledoc """
+    SIP grant is used to grant permissions for SIP related actions.
+
+    ## Examples
+
+    ```elixir
+    sip_grant = %ExLivekit.Grants.SIPGrant{admin: true, call: true}
+    ```
+    """
     defstruct admin: false, call: false
 
     @type t :: %__MODULE__{
@@ -72,6 +90,15 @@ defmodule ExLivekit.Grants do
   end
 
   defmodule InferenceGrant do
+    @moduledoc """
+    Inference grant is used to grant permissions for inference related actions.
+
+    ## Examples
+
+    ```elixir
+    inference_grant = %ExLivekit.Grants.InferenceGrant{perform: true}
+    ```
+    """
     defstruct perform: false
 
     @type t :: %__MODULE__{
@@ -81,6 +108,15 @@ defmodule ExLivekit.Grants do
   end
 
   defmodule ObservabilityGrant do
+    @moduledoc """
+    Observability grant is used to grant permissions for observability related actions.
+
+    ## Examples
+
+    ```elixir
+    observability_grant = %ExLivekit.Grants.ObservabilityGrant{write: true}
+    ```
+    """
     defstruct write: false
 
     @type t :: %__MODULE__{
@@ -90,6 +126,9 @@ defmodule ExLivekit.Grants do
   end
 
   defmodule ClaimGrant do
+    @moduledoc """
+    Claim grant are JWT claims that are used to grant permissions for a participant.
+    """
     defstruct [
       :attributes,
       :identity,
@@ -118,6 +157,7 @@ defmodule ExLivekit.Grants do
             video: VideoGrant.t() | nil
           }
 
+    @doc false
     @spec to_jwt_payload(t()) :: map()
     def to_jwt_payload(%__MODULE__{} = grant) do
       grant

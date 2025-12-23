@@ -1,10 +1,34 @@
 defmodule ExLivekit.Webhook do
+  @moduledoc """
+  Module for receiving and validating LiveKit webhook events.
+
+  This module provides functionality to receive and validate LiveKit webhook events.
+  It handles webhook event validation, token verification, and SHA256 validation.
+  """
+
   alias ExLivekit.Grants.ClaimGrant
   alias ExLivekit.TokenVerifier
 
   @type config :: %{api_key: binary(), api_secret: binary()}
   @type webhook_error :: :webhook_not_configured | :invalid_token | :invalid_sha256
 
+  @doc """
+  Receives a LiveKit webhook event and validates the token and SHA256.
+
+  ## Examples
+
+  ```elixir
+  {:ok, event} = ExLivekit.Webhook.receive_event(event, auth_token)
+  ```
+
+
+  The auth_token can be a JWT token or a Bearer token.
+
+  ```elixir
+  {:ok, event} = ExLivekit.Webhook.receive_event(event, "Bearer auth_token")
+  {:ok, event} = ExLivekit.Webhook.receive_event(event, "auth_token")
+  ```
+  """
   @spec receive_event(event :: binary(), auth_token :: binary()) ::
           {:ok, Livekit.WebhookEvent.t()} | {:error, webhook_error}
   def receive_event(event, "Bearer " <> auth_token), do: receive_event(event, auth_token)

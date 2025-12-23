@@ -11,6 +11,7 @@ defmodule ExLivekit.Client.Finch do
   Configure Finch options via application environment:
 
       config :ex_livekit,
+        http_client: :finch,
         finch_opts: [receive_timeout: 30_000],
         finch_pool_opts: [size: 10]
 
