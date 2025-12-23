@@ -11,7 +11,7 @@ Add `ex_livekit` to your dependencies. By default, `hackney` is used as the HTTP
 ```elixir
 def deps do
   [
-    {:ex_livekit, "~> 0.1.0"},
+    {:ex_livekit, git: "https://github.com/a-boro/livekit-elixir-server-sdk.git", branch: "main"},
     {:hackney, "~> 1.22"}
   ]
 end
