@@ -17,8 +17,8 @@ defmodule ExLivekit.Client.Hackney do
   See the Hackney documentation for available options.
   """
 
+  use ExLivekit.Client.HTTPClient
   alias ExLivekit.Config
-  @behaviour ExLivekit.Client.HTTPClient
 
   @impl ExLivekit.Client.HTTPClient
   def child_spec do
@@ -53,8 +53,11 @@ defmodule ExLivekit.Client.Hackney do
       {:ok, status, headers, body} ->
         {:ok, %{status: status, headers: headers, body: body}}
 
-      {:error, error} ->
-        {:error, error}
+      {:error, reason} when reason in @client_error_reasons ->
+        {:error, %{reason: reason}}
+
+      _error ->
+        {:error, %{reason: :unknown}}
     end
   end
 end

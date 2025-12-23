@@ -106,7 +106,7 @@ defmodule ExLivekit.Client do
       )
   """
   @spec request(t(), String.t(), String.t(), struct(), list()) ::
-          {:ok, binary()} | {:error, map() | term()}
+          {:ok, binary()} | {:error, ExLivekit.Client.Error.t()}
   def request(%__MODULE__{} = client, svc, method, payload, auth_headers \\ []) do
     url = prepare_url(client.host, svc, method)
     http_client = Config.http_client()
@@ -117,11 +117,8 @@ defmodule ExLivekit.Client do
       {:ok, %{status: 200, body: body}} ->
         {:ok, body}
 
-      {:ok, %{status: status, body: body}} ->
-        {:error, %{status: status, body: body}}
-
-      {:error, error} ->
-        {:error, error}
+      error ->
+        ExLivekit.Client.Error.handle_error(error)
     end
   end
 

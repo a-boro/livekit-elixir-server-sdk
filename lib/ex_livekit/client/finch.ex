@@ -18,7 +18,7 @@ defmodule ExLivekit.Client.Finch do
   See the Finch documentation for available options.
   """
 
-  @behaviour ExLivekit.Client.HTTPClient
+  use ExLivekit.Client.HTTPClient
 
   @impl ExLivekit.Client.HTTPClient
   def child_spec do
@@ -49,8 +49,11 @@ defmodule ExLivekit.Client.Finch do
       {:ok, response} ->
         {:ok, %{status: response.status, headers: response.headers, body: response.body}}
 
-      {:error, error} ->
-        {:error, error}
+      {:error, %{reason: reason}} when reason in @client_error_reasons ->
+        {:error, %{reason: reason}}
+
+      _error ->
+        {:error, %{reason: :unknown}}
     end
   end
 end
