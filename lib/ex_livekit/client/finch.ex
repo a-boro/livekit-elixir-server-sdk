@@ -22,7 +22,7 @@ defmodule ExLivekit.Client.Finch do
 
   @impl ExLivekit.Client.HTTPClient
   def child_spec do
-    if Code.ensure_loaded?(:finch) do
+    if Code.ensure_loaded?(Finch) do
       case Application.ensure_all_started(:finch) do
         {:ok, _apps} -> :ok
         {:error, reason} -> raise "failed to start the :finch application: #{inspect(reason)}"

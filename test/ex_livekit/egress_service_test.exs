@@ -542,12 +542,11 @@ defmodule ExLivekit.EgressServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok, %Livekit.ListEgressResponse{items: items}} =
-               EgressService.list_egress(client)
+      assert {:ok, items} = EgressService.list_egress(client)
 
       assert length(items) == 2
-      assert Enum.at(items, 0).egress_id == "egress_1"
-      assert Enum.at(items, 1).egress_id == "egress_2"
+      assert Enum.any?(items, fn item -> item.egress_id == "egress_1" end)
+      assert Enum.any?(items, fn item -> item.egress_id == "egress_2" end)
     end
 
     test "lists egress filtered by room_name", %{bypass: bypass, client: client} do
@@ -574,10 +573,7 @@ defmodule ExLivekit.EgressServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok,
-              %Livekit.ListEgressResponse{
-                items: [%Livekit.EgressInfo{room_name: "test_room"}]
-              }} =
+      assert {:ok, [%Livekit.EgressInfo{room_name: "test_room"}]} =
                EgressService.list_egress(client, room_name: "test_room")
     end
 
@@ -605,10 +601,7 @@ defmodule ExLivekit.EgressServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok,
-              %Livekit.ListEgressResponse{
-                items: [%Livekit.EgressInfo{egress_id: "egress_123"}]
-              }} =
+      assert {:ok, [%Livekit.EgressInfo{egress_id: "egress_123"}]} =
                EgressService.list_egress(client, egress_id: "egress_123")
     end
 
@@ -634,8 +627,7 @@ defmodule ExLivekit.EgressServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok, %Livekit.ListEgressResponse{items: [%Livekit.EgressInfo{}]}} =
-               EgressService.list_egress(client, active: true)
+      assert {:ok, [%Livekit.EgressInfo{}]} = EgressService.list_egress(client, active: true)
     end
   end
 

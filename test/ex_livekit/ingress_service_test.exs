@@ -53,13 +53,13 @@ defmodule ExLivekit.IngressServiceTest do
       ingress_id = "ingress_123"
 
       opts = [
-        input_type: :RTMP_INPUT,
+        input_type: :URL_INPUT,
         name: "test_ingress",
         room_name: "test_room",
         participant_identity: "participant1",
         participant_name: "Participant 1",
-        participant_metadata: "test_metadata",
-        url: "rtmp://example.com/live"
+        url: "https://example.com/stream.mp4",
+        enable_transcoding: true
       ]
 
       Bypass.expect_once(bypass, "POST", @url, fn conn ->
@@ -71,8 +71,7 @@ defmodule ExLivekit.IngressServiceTest do
         assert request.room_name == opts[:room_name]
         assert request.participant_identity == opts[:participant_identity]
         assert request.participant_name == opts[:participant_name]
-        assert request.participant_metadata == opts[:participant_metadata]
-        assert request.url == opts[:url]
+        assert request.enable_transcoding == opts[:enable_transcoding]
 
         response =
           %Livekit.IngressInfo{
@@ -81,8 +80,8 @@ defmodule ExLivekit.IngressServiceTest do
             room_name: request.room_name,
             participant_identity: request.participant_identity,
             participant_name: request.participant_name,
-            participant_metadata: request.participant_metadata,
-            url: request.url
+            url: request.url,
+            input_type: request.input_type
           }
           |> Protobuf.encode()
 
@@ -96,10 +95,10 @@ defmodule ExLivekit.IngressServiceTest do
 
       assert response.ingress_id == ingress_id
       assert response.name == opts[:name]
+      assert response.input_type == opts[:input_type]
       assert response.room_name == opts[:room_name]
       assert response.participant_identity == opts[:participant_identity]
       assert response.participant_name == opts[:participant_name]
-      assert response.participant_metadata == opts[:participant_metadata]
       assert response.url == opts[:url]
     end
   end
@@ -107,13 +106,14 @@ defmodule ExLivekit.IngressServiceTest do
   describe "update_ingress/2" do
     @url "/twirp/livekit.Ingress/UpdateIngress"
     test "updates an ingress", %{bypass: bypass, client: client} do
-      opts = [ingress_id: "ingress_123", name: "updated_ingress", room_name: "test_room"]
+      ingress_id = "ingress_123"
+      opts = [name: "updated_ingress", room_name: "test_room"]
 
       Bypass.expect_once(bypass, "POST", @url, fn conn ->
         {:ok, body, conn} = Plug.Conn.read_body(conn)
         request = body |> Livekit.UpdateIngressRequest.decode() |> Map.from_struct()
 
-        assert request.ingress_id == opts[:ingress_id]
+        assert request.ingress_id == ingress_id
         assert request.name == opts[:name]
         assert request.room_name == opts[:room_name]
 
@@ -131,36 +131,39 @@ defmodule ExLivekit.IngressServiceTest do
       end)
 
       assert {:ok, %Livekit.IngressInfo{} = response} =
-               IngressService.update_ingress(client, opts)
+               IngressService.update_ingress(client, ingress_id, opts)
 
-      assert response.ingress_id == opts[:ingress_id]
+      assert response.ingress_id == ingress_id
       assert response.name == opts[:name]
       assert response.room_name == opts[:room_name]
     end
 
     test "updates an ingress with participant options", %{bypass: bypass, client: client} do
+      ingress_id = "ingress_123"
+
       opts = [
-        ingress_id: "ingress_123",
+        name: "updated_ingress",
+        room_name: "test_room",
         participant_identity: "participant1",
-        participant_name: "Updated Participant",
-        participant_metadata: "updated_metadata"
+        participant_name: "Updated Participant"
       ]
 
       Bypass.expect_once(bypass, "POST", @url, fn conn ->
         {:ok, body, conn} = Plug.Conn.read_body(conn)
         request = body |> Livekit.UpdateIngressRequest.decode() |> Map.from_struct()
 
-        assert request.ingress_id == opts[:ingress_id]
+        assert request.name == opts[:name]
+        assert request.room_name == opts[:room_name]
         assert request.participant_identity == opts[:participant_identity]
         assert request.participant_name == opts[:participant_name]
-        assert request.participant_metadata == opts[:participant_metadata]
 
         response =
           %Livekit.IngressInfo{
             ingress_id: request.ingress_id,
+            name: request.name,
+            room_name: request.room_name,
             participant_identity: request.participant_identity,
-            participant_name: request.participant_name,
-            participant_metadata: request.participant_metadata
+            participant_name: request.participant_name
           }
           |> Protobuf.encode()
 
@@ -170,12 +173,13 @@ defmodule ExLivekit.IngressServiceTest do
       end)
 
       assert {:ok, %Livekit.IngressInfo{} = response} =
-               IngressService.update_ingress(client, opts)
+               IngressService.update_ingress(client, ingress_id, opts)
 
-      assert response.ingress_id == opts[:ingress_id]
+      assert response.ingress_id == ingress_id
+      assert response.name == opts[:name]
+      assert response.room_name == opts[:room_name]
       assert response.participant_identity == opts[:participant_identity]
       assert response.participant_name == opts[:participant_name]
-      assert response.participant_metadata == opts[:participant_metadata]
     end
   end
 
@@ -210,8 +214,7 @@ defmodule ExLivekit.IngressServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok, %Livekit.ListIngressResponse{items: items}} =
-               IngressService.list_ingresses(client)
+      assert {:ok, items} = IngressService.list_ingresses(client)
 
       assert length(items) == 2
       assert Enum.at(items, 0).ingress_id == "ingress_1"
@@ -241,14 +244,15 @@ defmodule ExLivekit.IngressServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok,
-              %Livekit.ListIngressResponse{items: [%Livekit.IngressInfo{room_name: "test_room"}]}} =
+      assert {:ok, [%Livekit.IngressInfo{room_name: "test_room"}]} =
                IngressService.list_ingresses(client, room_name: "test_room")
     end
 
     test "lists ingresses filtered by ingress_id", %{bypass: bypass, client: client} do
+      ingress_id = "ingress_123"
+
       ingress = %Livekit.IngressInfo{
-        ingress_id: "ingress_123",
+        ingress_id: ingress_id,
         name: "ingress1"
       }
 
@@ -256,7 +260,7 @@ defmodule ExLivekit.IngressServiceTest do
         {:ok, body, conn} = Plug.Conn.read_body(conn)
         request = body |> Livekit.ListIngressRequest.decode() |> Map.from_struct()
 
-        assert request.ingress_id == "ingress_123"
+        assert request.ingress_id == ingress_id
         assert request.room_name == ""
 
         response =
@@ -268,11 +272,8 @@ defmodule ExLivekit.IngressServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok,
-              %Livekit.ListIngressResponse{
-                items: [%Livekit.IngressInfo{ingress_id: "ingress_123"}]
-              }} =
-               IngressService.list_ingresses(client, ingress_id: "ingress_123")
+      assert {:ok, [%Livekit.IngressInfo{ingress_id: ^ingress_id}]} =
+               IngressService.list_ingresses(client, ingress_id: ingress_id)
     end
   end
 

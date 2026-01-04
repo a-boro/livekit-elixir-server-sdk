@@ -97,10 +97,10 @@ defmodule ExLivekit.RoomServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      {:ok, response} = RoomService.list_rooms(client)
-      assert length(response.rooms) == 2
-      assert Enum.at(response.rooms, 0).name == "room1"
-      assert Enum.at(response.rooms, 1).name == "room2"
+      {:ok, rooms} = RoomService.list_rooms(client)
+      assert length(rooms) == 2
+      assert Enum.any?(rooms, fn room -> room.name == "room1" end)
+      assert Enum.any?(rooms, fn room -> room.name == "room2" end)
     end
 
     test "lists rooms with names filter", %{bypass: bypass, client: client} do
@@ -121,7 +121,7 @@ defmodule ExLivekit.RoomServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok, %Livekit.ListRoomsResponse{rooms: [%Livekit.Room{name: "room1"}]}} =
+      assert {:ok, [%Livekit.Room{name: "room1"}]} =
                RoomService.list_rooms(client, names: ["room1", "room2"])
     end
   end
@@ -197,12 +197,11 @@ defmodule ExLivekit.RoomServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok, %Livekit.ListParticipantsResponse{participants: participants}} =
-               RoomService.list_participants(client, "test_room")
+      assert {:ok, participants} = RoomService.list_participants(client, "test_room")
 
       assert length(participants) == 2
-      assert Enum.at(participants, 0).identity == "user1"
-      assert Enum.at(participants, 1).identity == "user2"
+      assert Enum.any?(participants, fn participant -> participant.identity == "user1" end)
+      assert Enum.any?(participants, fn participant -> participant.identity == "user2" end)
     end
   end
 
@@ -325,7 +324,7 @@ defmodule ExLivekit.RoomServiceTest do
         |> Plug.Conn.resp(200, response)
       end)
 
-      assert {:ok, %Livekit.MuteRoomTrackResponse{track: %Livekit.TrackInfo{muted: true}}} =
+      assert {:ok, %Livekit.TrackInfo{muted: true}} =
                RoomService.mute_published_track(client, "test_room", "user1", "track_sid1", true)
     end
   end

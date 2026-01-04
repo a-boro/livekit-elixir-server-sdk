@@ -5,16 +5,15 @@ defmodule ExLivekit.AccessToken do
   This module provides functionality to create access tokens for LiveKit services.
   It handles token creation, grant management, and JWT encoding.
 
-  ## Examples
+  ## Room Join Example
 
   ```elixir
   token =
     ExLivekit.AccessToken.new()
     |> ExLivekit.AccessToken.add_identity("identity")
+    |> ExLivekit.AccessToken.add_name("participant_name")
     |> ExLivekit.AccessToken.add_ttl(3600)
-    |> ExLivekit.AccessToken.add_metadata("metadata")
-    |> ExLivekit.AccessToken.add_name("name")
-    |> ExLivekit.AccessToken.add_grants(%ExLivekit.Grants.VideoGrant{room_create: true})
+    |> ExLivekit.AccessToken.add_grants(%ExLivekit.Grants.VideoGrant{room_join: true})
     |> ExLivekit.AccessToken.to_jwt()
   ```
   """
@@ -50,6 +49,10 @@ defmodule ExLivekit.AccessToken do
   @doc """
   Creates a new access token.
 
+  Options:
+  - api_key: the API key to use for the token [optional]
+  - api_secret: the API secret to use for the token [optional]
+
   ## Examples
 
   If no opts are provided, it will use the api_key and api_secret from the config.
@@ -62,7 +65,7 @@ defmodule ExLivekit.AccessToken do
   ```
   """
   @spec new() :: t()
-  @spec new(opts :: Keyword.t()) :: t()
+  @spec new(opts :: [api_key: api_key(), api_secret: api_secret()]) :: t()
   def new(opts \\ []) do
     %__MODULE__{
       api_key: Config.fetch_from_opts!(:api_key, opts),

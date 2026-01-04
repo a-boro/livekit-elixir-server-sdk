@@ -38,16 +38,16 @@ defmodule ExLivekit.Client do
 
   defstruct [:host, :api_key, :api_secret]
 
+  @base_headers [
+    {"User-Agent", "Livekit Elixir SDK"},
+    {"Content-Type", "application/protobuf"}
+  ]
+
   @type t :: %__MODULE__{
           host: String.t(),
           api_key: String.t(),
           api_secret: String.t()
         }
-
-  @base_headers [
-    {"User-Agent", "Livekit Elixir SDK"},
-    {"Content-Type", "application/protobuf"}
-  ]
 
   @doc """
   Creates a new LiveKit client.
@@ -69,7 +69,8 @@ defmodule ExLivekit.Client do
       ...> )
       %ExLivekit.Client{...}
   """
-  @spec new(Keyword.t()) :: t()
+
+  @spec new(opts :: [host: String.t(), api_key: String.t(), api_secret: String.t()]) :: t()
   def new(opts \\ []) do
     %__MODULE__{
       host: Config.fetch_from_opts!(:host, opts),
