@@ -36,7 +36,6 @@ defmodule ExLivekit.EgressService do
 
   @svc "EgressService"
 
-  @type opts :: Keyword.t()
   @type room_name :: String.t()
   @type egress_id :: String.t()
   @type output ::
@@ -51,7 +50,54 @@ defmodule ExLivekit.EgressService do
               | Livekit.ImageOutput.t()
             ]
 
-  @spec start_room_composite_egress(Client.t(), room_name(), output(), opts()) ::
+  @type audio_mixing :: :DEFAULT_MIXING | :NO_MIXING | :REPLACE_SOURCE
+  @type encoding_options_preset ::
+          :H264_720P_30
+          | :H264_720P_60
+          | :H264_1080P_30
+          | :H264_1080P_60
+          | :PORTRAIT_H264_720P_30
+          | :PORTRAIT_H264_720P_60
+          | :PORTRAIT_H264_1080P_30
+          | :PORTRAIT_H264_1080P_60
+
+  @type create_egress_request ::
+          RoomCompositeEgressRequest.t()
+          | ParticipantEgressRequest.t()
+          | TrackCompositeEgressRequest.t()
+          | WebEgressRequest.t()
+
+  @type start_room_composite_egress_opts :: [
+          layout: String.t(),
+          audio_only: boolean(),
+          video_only: boolean(),
+          audio_mixing: audio_mixing(),
+          custom_base_url: String.t(),
+          webhooks: [Livekit.WebhookConfig.t()],
+          options: Livekit.EncodingOptions.t() | encoding_options_preset()
+        ]
+
+  @doc """
+  Starts a room composite egress.
+
+  Output can be a single output or a list of outputs.
+  If a list of outputs is provided, only one of each type of output can be provided.
+
+  Options:
+  - layout: the layout to use for the egress [optional], default is "grid"
+  - audio_only: whether to only record audio [optional], default is false
+  - video_only: whether to only record video [optional], default is false
+  - audio_mixing: the audio mixing to use for the egress [optional], default is :DEFAULT_MIXING
+  - custom_base_url: the custom base URL to use for the egress [optional]
+  - webhooks: the webhooks to call for the egress [optional], default is []
+  - options: the encoding options or preset to use for the egress [optional]
+  """
+  @spec start_room_composite_egress(
+          Client.t(),
+          room_name(),
+          output(),
+          start_room_composite_egress_opts()
+        ) ::
           {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_room_composite_egress(%Client{} = client, room_name, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
@@ -61,6 +107,7 @@ defmodule ExLivekit.EgressService do
       layout: opts[:layout],
       audio_only: opts[:audio_only] || false,
       video_only: opts[:video_only] || false,
+      audio_mixing: opts[:audio_mixing] || :DEFAULT_MIXING,
       custom_base_url: opts[:custom_base_url],
       webhooks: opts[:webhooks] || []
     }
@@ -76,7 +123,31 @@ defmodule ExLivekit.EgressService do
     end
   end
 
-  @spec start_participant_egress(Client.t(), room_name(), String.t(), output(), opts()) ::
+  @type start_participant_egress_opts :: [
+          screen_share: boolean(),
+          webhooks: [Livekit.WebhookConfig.t()],
+          options: Livekit.EncodingOptions.t() | encoding_options_preset()
+        ]
+
+  @doc """
+  Starts a participant egress.
+
+  Output can be a single output or a list of outputs.
+  If a list of outputs is provided, only one of each type of output can be provided.
+
+  Options:
+  - screen_share: whether to record the screen share [optional], default is false
+  - webhooks: extra the webhooks to call for the egress [optional], default is []
+  - options: the encoding options or preset to use for the egress [optional]
+  """
+
+  @spec start_participant_egress(
+          Client.t(),
+          room_name(),
+          String.t(),
+          output(),
+          start_participant_egress_opts()
+        ) ::
           {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_participant_egress(%Client{} = client, room_name, identity, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
@@ -94,12 +165,36 @@ defmodule ExLivekit.EgressService do
       |> set_output(output)
 
     case Client.request(client, @svc, "StartParticipantEgress", payload, auth_headers) do
-      {:ok, body} -> {:ok, Livekit.EgressInfo.decode(body)}
+      {:ok, body} -> {:ok, EgressInfo.decode(body)}
       {:error, error} -> {:error, error}
     end
   end
 
-  @spec start_track_composite_egress(Client.t(), room_name(), output(), opts()) ::
+  @type start_track_composite_egress_opts :: [
+          audio_track_id: String.t(),
+          video_track_id: String.t(),
+          webhooks: [Livekit.WebhookConfig.t()],
+          options: Livekit.EncodingOptions.t() | encoding_options_preset()
+        ]
+
+  @doc """
+  Starts a track composite egress.
+
+  Output can be a single output or a list of outputs.
+  If a list of outputs is provided, only one of each type of output can be provided.
+
+  Options:
+  - audio_track_id: the id of the audio track to record [optional]
+  - video_track_id: the id of the video track to record [optional]
+  - webhooks: extra the webhooks to call for the egress [optional], default is []
+  - options: the encoding options or preset to use for the egress [optional]
+  """
+  @spec start_track_composite_egress(
+          Client.t(),
+          room_name(),
+          output(),
+          start_track_composite_egress_opts()
+        ) ::
           {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_track_composite_egress(%Client{} = client, room_name, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
@@ -122,40 +217,74 @@ defmodule ExLivekit.EgressService do
     end
   end
 
+  @type start_track_egress_opts :: [webhooks: [Livekit.WebhookConfig.t()]]
+  @type websocket_url :: String.t()
+
+  @doc """
+  Record tracks individually, without transcoding.
+
+  Output: can be either a Livekit.DirectFileOutput struct or a WebSocket URL string.
+
+  Options:
+  - webhooks: extra the webhooks to call for the egress [optional], default is []
+  """
   @spec start_track_egress(
           Client.t(),
           room_name(),
           String.t(),
-          Livekit.DirectFileOutput.t() | String.t()
+          Livekit.DirectFileOutput.t() | websocket_url(),
+          start_track_egress_opts()
         ) :: {:ok, EgressInfo.t()} | {:error, Error.t()}
-  def start_track_egress(%Client{} = client, room_name, track_id, output) do
+  def start_track_egress(%Client{} = client, room_name, track_id, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
     request = %TrackEgressRequest{
       room_name: room_name,
-      track_id: track_id
+      track_id: track_id,
+      webhooks: opts[:webhooks] || []
     }
 
     payload =
-      cond do
-        is_struct(output, Livekit.DirectFileOutput) ->
-          Map.put(request, :file, output)
+      case output do
+        %Livekit.DirectFileOutput{} = output ->
+          Map.put(request, :output, {:file, output})
 
-        is_binary(output) ->
-          Map.put(request, :websocket_url, output)
+        websocket_url when is_binary(websocket_url) ->
+          Map.put(request, :output, {:websocket_url, websocket_url})
 
-        true ->
+        _ ->
           raise ArgumentError,
                 "output must be a DirectFileOutput struct or a WebSocket URL string, got: #{inspect(output)}"
       end
 
     case Client.request(client, @svc, "StartTrackEgress", payload, auth_headers) do
-      {:ok, body} -> {:ok, Livekit.EgressInfo.decode(body)}
+      {:ok, body} -> {:ok, EgressInfo.decode(body)}
       {:error, error} -> {:error, error}
     end
   end
 
-  @spec start_web_egress(Client.t(), String.t(), output(), opts()) ::
+  @type start_web_egress_opts :: [
+          audio_only: boolean(),
+          video_only: boolean(),
+          await_start_signal: boolean(),
+          webhooks: [Livekit.WebhookConfig.t()],
+          options: Livekit.EncodingOptions.t() | encoding_options_preset()
+        ]
+
+  @doc """
+  Starts a web egress to record any website.
+
+  Output can be a single output or a list of outputs.
+  If a list of outputs is provided, only one of each type of output can be provided.
+
+  Options:
+  - audio_only: whether to only record audio [optional], default is false
+  - video_only: whether to only record video [optional], default is false
+  - await_start_signal: whether to await a start signal before recording [optional], default is false
+  - webhooks: extra the webhooks to call for the egress [optional], default is []
+  - options: the encoding options or preset to use for the egress [optional]
+  """
+  @spec start_web_egress(Client.t(), String.t(), output(), start_web_egress_opts()) ::
           {:ok, EgressInfo.t()} | {:error, Error.t()}
   def start_web_egress(%Client{} = client, url, output, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
@@ -179,7 +308,10 @@ defmodule ExLivekit.EgressService do
     end
   end
 
-  @spec update_layout(Client.t(), egress_id(), String.t()) ::
+  @doc """
+  Updates the layout for an existing egress.
+  """
+  @spec update_layout(Client.t(), egress_id(), layout: String.t()) ::
           {:ok, EgressInfo.t()} | {:error, Error.t()}
   def update_layout(%Client{} = client, egress_id, layout) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
@@ -195,7 +327,26 @@ defmodule ExLivekit.EgressService do
     end
   end
 
-  @spec update_stream(Client.t(), egress_id(), opts()) ::
+  @type update_stream_opts :: [
+          add_output_urls: [String.t()],
+          remove_output_urls: [String.t()]
+        ]
+  @doc """
+  Updates a stream endpoint for an existing egress.
+
+  Options:
+  - add_output_urls: the URLs to add to the stream [optional], default is []
+  - remove_output_urls: the URLs to remove from the stream [optional], default is []
+
+  ## Examples
+
+  ```elixir
+  {:ok, egress} = ExLivekit.EgressService.update_stream(client, "egress_id", add_output_urls: ["https://example.com/stream.mp4"])
+  {:ok, egress} = ExLivekit.EgressService.update_stream(client, "egress_id", remove_output_urls: ["https://example.com/stream.mp4"])
+  {:ok, egress} = ExLivekit.EgressService.update_stream(client, "egress_id", add_output_urls: ["https://example.com/stream.mp4"], remove_output_urls: ["https://example.com/stream.mp4"])
+  ```
+  """
+  @spec update_stream(Client.t(), egress_id(), update_stream_opts()) ::
           {:ok, EgressInfo.t()} | {:error, Error.t()}
   def update_stream(%Client{} = client, egress_id, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
@@ -212,8 +363,30 @@ defmodule ExLivekit.EgressService do
     end
   end
 
-  @spec list_egress(Client.t(), opts()) ::
-          {:ok, ListEgressResponse.t()} | {:error, Error.t()}
+  @type list_egress_opts :: [
+          room_name: room_name(),
+          egress_id: egress_id(),
+          active: boolean()
+        ]
+  @doc """
+  Lists egresses that are active on the server.
+  Options:
+  - room_name: the room name to list egresses for [optional]
+  - egress_id: the id of the egress to list [optional]
+  - active: whether to list active egresses only [optional], default is false
+
+  ## Examples
+
+  ```elixir
+  {:ok, egresses} = ExLivekit.EgressService.list_egress(client)
+  {:ok, egresses} = ExLivekit.EgressService.list_egress(client, room_name: "room_name")
+  {:ok, egresses} = ExLivekit.EgressService.list_egress(client, egress_id: "egress_id")
+  {:ok, egresses} = ExLivekit.EgressService.list_egress(client, active: true)
+  {:ok, egresses} = ExLivekit.EgressService.list_egress(client, room_name: "room_name", active: true)
+  ```
+  """
+  @spec list_egress(Client.t(), list_egress_opts()) ::
+          {:ok, [EgressInfo.t()]} | {:error, Error.t()}
   def list_egress(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
 
@@ -224,11 +397,24 @@ defmodule ExLivekit.EgressService do
     }
 
     case Client.request(client, @svc, "ListEgress", payload, auth_headers) do
-      {:ok, body} -> {:ok, ListEgressResponse.decode(body)}
-      {:error, error} -> {:error, error}
+      {:ok, body} ->
+        resp = ListEgressResponse.decode(body)
+        {:ok, resp.items}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
+  @doc """
+  Stops an existing egress.
+
+  ## Examples
+
+  ```elixir
+  {:ok, egress} = ExLivekit.EgressService.stop_egress(client, "egress_id")
+  ```
+  """
   @spec stop_egress(Client.t(), egress_id()) :: {:ok, EgressInfo.t()} | {:error, Error.t()}
   def stop_egress(%Client{} = client, egress_id) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_record: true})
@@ -258,17 +444,8 @@ defmodule ExLivekit.EgressService do
 
   # Helper function to set output fields on request structs
   # Supports single output or array of outputs (up to one of each type)
-  @spec set_output(
-          RoomCompositeEgressRequest.t()
-          | ParticipantEgressRequest.t()
-          | TrackCompositeEgressRequest.t()
-          | WebEgressRequest.t(),
-          output()
-        ) ::
-          RoomCompositeEgressRequest.t()
-          | ParticipantEgressRequest.t()
-          | TrackCompositeEgressRequest.t()
-          | WebEgressRequest.t()
+  @doc false
+  @spec set_output(create_egress_request(), output()) :: create_egress_request()
   def set_output(_request, nil) do
     raise ArgumentError, "output cannot be nil"
   end
