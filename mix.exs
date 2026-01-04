@@ -79,12 +79,14 @@ defmodule ExLivekit.MixProject do
           ExLivekit.Grants.SIPGrant,
           ExLivekit.Grants.VideoGrant
         ],
-        "Livekit Client": [
+        "Livekit HTTP Clients": [
           ExLivekit.Client,
+          ExLivekit.Client.Error,
           ExLivekit.Client.Finch,
-          ExLivekit.Client.Hackney,
-          ExLivekit.Client.HTTPClient,
-          ExLivekit.Client.Error
+          ExLivekit.Client.Hackney
+        ],
+        "Livekit HTTP Client Behaviour": [
+          ExLivekit.Client.HTTPClient
         ],
         "Livekit Protobufs": [
           ~r"^Livekit\.*"
