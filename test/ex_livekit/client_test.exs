@@ -76,10 +76,7 @@ defmodule ExLivekit.ClientTest do
 
     test "returns authorization headers with video grant", %{client: client} do
       video_grant = %ExLivekit.Grants.VideoGrant{
-        room_join: true,
-        room: "test_room",
-        can_publish: true,
-        can_subscribe: true
+        room_admin: true
       }
 
       assert [{"Authorization", token}] = Client.auth_headers(client, video_grant: video_grant)
@@ -90,10 +87,7 @@ defmodule ExLivekit.ClientTest do
 
       assert Map.has_key?(claims, "video")
       video_claims = claims["video"]
-      assert video_claims["room"] == video_grant.room
-      assert video_claims["roomJoin"] == video_grant.room_join
-      assert video_claims["canPublish"] == video_grant.can_publish
-      assert video_claims["canSubscribe"] == video_grant.can_subscribe
+      assert video_claims["roomAdmin"] == video_grant.room_admin
     end
 
     test "returns authorization headers with sip grant", %{client: client} do
@@ -112,10 +106,7 @@ defmodule ExLivekit.ClientTest do
 
     test "returns authorization headers with both video and sip grants", %{client: client} do
       video_grant = %ExLivekit.Grants.VideoGrant{
-        room_join: true,
-        room: "test_room",
-        can_publish: true,
-        can_subscribe: true
+        room_admin: true
       }
 
       sip_grant = %ExLivekit.Grants.SIPGrant{admin: true, call: false}
@@ -129,8 +120,7 @@ defmodule ExLivekit.ClientTest do
 
       video_claims = claims["video"]
       sip_claims = claims["sip"]
-      assert video_claims["room"] == video_grant.room
-      assert video_claims["roomJoin"] == video_grant.room_join
+      assert video_claims["roomAdmin"] == video_grant.room_admin
       assert sip_claims["admin"] == sip_grant.admin
       assert sip_claims["call"] == sip_grant.call
     end

@@ -287,20 +287,27 @@ defmodule ExLivekit.AccessToken do
   """
   @spec to_jwt(t()) :: binary()
   def to_jwt(%__MODULE__{} = token) do
+    %{grants: grants, ttl: ttl, api_key: api_key, api_secret: api_secret} = token
+
     now = System.system_time(:second)
-    exp = if is_binary(token.ttl), do: token.ttl, else: now + token.ttl
-    signer = Joken.Signer.create("HS256", token.api_secret)
+    exp = if is_binary(ttl), do: ttl, else: now + ttl
+    signer = Joken.Signer.create("HS256", api_secret)
+
+    if is_struct(grants.video) and grants.video.room_join == true and
+         (not grants.identity or is_nil(grants.video.room)) do
+      raise ArgumentError, "identity and room must be set when joining a room"
+    end
 
     jwt_claims = %{
-      "sub" => token.grants.identity || "",
-      "iss" => token.api_key,
+      "sub" => grants.identity || "",
+      "iss" => api_key,
       "nbf" => now,
       "exp" => exp
     }
 
     {:ok, jwt, _claims} =
       jwt_claims
-      |> Map.merge(ClaimGrant.to_jwt_payload(token.grants))
+      |> Map.merge(ClaimGrant.to_jwt_payload(grants))
       |> Joken.encode_and_sign(signer)
 
     jwt
