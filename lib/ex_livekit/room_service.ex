@@ -14,12 +14,9 @@ defmodule ExLivekit.RoomService do
     DeleteRoomRequest,
     ForwardParticipantRequest,
     ListParticipantsRequest,
-    ListParticipantsResponse,
     ListRoomsRequest,
-    ListRoomsResponse,
     MoveParticipantRequest,
     MuteRoomTrackRequest,
-    MuteRoomTrackResponse,
     ParticipantInfo,
     Room,
     RoomParticipantIdentity,
@@ -129,14 +126,18 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec list_rooms(Client.t(), list_rooms_opts()) ::
-          {:ok, ListRoomsResponse.t()} | {:error, Error.t()}
+          {:ok, [Room.t()]} | {:error, Error.t()}
   def list_rooms(%Client{} = client, opts \\ []) do
     auth_headers = Client.auth_headers(client, video_grant: %VideoGrant{room_list: true})
     payload = %ListRoomsRequest{names: Keyword.get(opts, :names, [])}
 
     case Client.request(client, @svc, "ListRooms", payload, auth_headers) do
-      {:ok, body} -> {:ok, ListRoomsResponse.decode(body)}
-      {:error, error} -> {:error, error}
+      {:ok, body} ->
+        resp = Livekit.ListRoomsResponse.decode(body)
+        {:ok, resp.rooms}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
@@ -193,7 +194,7 @@ defmodule ExLivekit.RoomService do
   ```
   """
   @spec list_participants(Client.t(), room_name()) ::
-          {:ok, ListParticipantsResponse.t()} | {:error, Error.t()}
+          {:ok, [ParticipantInfo.t()]} | {:error, Error.t()}
   def list_participants(%Client{} = client, room_name) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -201,8 +202,12 @@ defmodule ExLivekit.RoomService do
     payload = %ListParticipantsRequest{room: room_name}
 
     case Client.request(client, @svc, "ListParticipants", payload, auth_headers) do
-      {:ok, body} -> {:ok, ListParticipantsResponse.decode(body)}
-      {:error, error} -> {:error, error}
+      {:ok, body} ->
+        resp = Livekit.ListParticipantsResponse.decode(body)
+        {:ok, resp.participants}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
@@ -333,10 +338,10 @@ defmodule ExLivekit.RoomService do
           Client.t(),
           room_name(),
           participant_identity(),
-          String.t(),
+          binary(),
           boolean()
         ) ::
-          {:ok, Livekit.TrackInfo.t()} | {:error, Error.t()}
+          {:ok, Livekit.TrackInfo.t() | nil} | {:error, Error.t()}
   def mute_published_track(%Client{} = client, room_name, identity, track_sid, muted) do
     auth_headers =
       Client.auth_headers(client, video_grant: %VideoGrant{room_admin: true, room: room_name})
@@ -349,8 +354,12 @@ defmodule ExLivekit.RoomService do
     }
 
     case Client.request(client, @svc, "MutePublishedTrack", payload, auth_headers) do
-      {:ok, body} -> {:ok, MuteRoomTrackResponse.decode(body)}
-      {:error, error} -> {:error, error}
+      {:ok, body} ->
+        resp = Livekit.MuteRoomTrackResponse.decode(body)
+        {:ok, resp.track}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
@@ -461,7 +470,7 @@ defmodule ExLivekit.RoomService do
   end
 
   @type send_data_opts :: [
-          destination_identities: [String.t()],
+          destination_identities: [participant_identity()],
           topic: String.t()
         ]
   @doc """
@@ -474,14 +483,14 @@ defmodule ExLivekit.RoomService do
   ## Examples
 
   ```elixir
-  :ok = ExLivekit.RoomService.send_data(client, "room_name", "data", "kind", destination_identities: ["identity1", "identity2"], topic: "topic")
+  :ok = ExLivekit.RoomService.send_data(client, "room_name", "data", :RELIABLE, destination_identities: ["identity1", "identity2"], topic: "topic")
   ```
   """
   @spec send_data(
           Client.t(),
           room_name(),
-          binary(),
-          Livekit.DataPacket.Kind.t(),
+          data :: binary(),
+          kind :: :RELIABLE | :LOSSY,
           send_data_opts()
         ) ::
           :ok | {:error, Error.t()}
