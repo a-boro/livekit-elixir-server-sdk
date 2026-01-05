@@ -13,7 +13,7 @@ defmodule ExLivekit.AccessToken do
     |> ExLivekit.AccessToken.add_identity("identity")
     |> ExLivekit.AccessToken.add_name("participant_name")
     |> ExLivekit.AccessToken.add_ttl(3600)
-    |> ExLivekit.AccessToken.add_grants(%ExLivekit.Grants.VideoGrant{room_join: true})
+    |> ExLivekit.AccessToken.add_grants(%ExLivekit.Grants.VideoGrant{room: "room", room_join: true})
     |> ExLivekit.AccessToken.to_jwt()
   ```
   """
