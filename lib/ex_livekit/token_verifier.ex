@@ -99,6 +99,7 @@ defmodule ExLivekit.TokenVerifier do
   def string_map_to_struct(string_map, struct_module) when is_map(string_map) do
     struct_map =
       struct_module
+      |> struct()
       |> Map.from_struct()
       |> Map.new(fn {k, _v} -> {to_string(k), k} end)
 
