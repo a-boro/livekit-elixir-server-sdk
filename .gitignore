@@ -26,3 +26,5 @@ ex_livekit-*.tar
 /tmp/
 
 priv_docs/
+
+.tool-versions
