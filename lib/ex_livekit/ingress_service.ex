@@ -37,34 +37,59 @@ defmodule ExLivekit.IngressService do
   Creates a new ingress.
 
   Input Options:
-  - input_type: :RTMP_INPUT or :WHIP_INPUT (required)
-  - url: HTTP(S) or SRT url to the file or stream (only for URL_INPUT)
-  - name: optional, name to identify the ingress
-  - room_name: the room name to publish to
-  - participant_identity: Unique identity for the room participant the Ingress service will connect as
-  - participant_name: Name displayed in the room for the participant
-  - enable_transcoding: optional, whether to enable transcoding or forward the input media directly. Transcoding is required for all input types except WHIP. For WHIP, the default is to not transcode.
-  - audio: optional, audio options for the ingress
-  - video: optional, video options for the ingress
+  - input_type: :RTMP_INPUT, :WHIP_INPUT, :URL_INPUT [required]
+  - url: HTTP(S) or SRT url to the file or stream [only for :URL_INPUT]
+  - name: name to identify the ingress [optional]
+  - room_name: the room name to publish to [required]
+  - participant_identity: Unique identity for the room participant the Ingress service will connect as [required]
+  - participant_name: Name displayed in the room for the participant [optional]
+  - enable_transcoding: whether to enable transcoding or forward the input media directly. Transcoding is required for all input types except WHIP. For WHIP, the default is to not transcode. [optional]
+  - audio: audio options for the ingress [optional]
+  - video: video options for the ingress [optional]
 
 
   @spec create_ingress(Client.t(), create_ingress_opts()) :: {:ok, IngressInfo.t()} | {:error, Error.t()}
   ## RTMP Example
 
   ```elixir
-  {:ok, ingress} = ExLivekit.IngressService.create_ingress(client, input_type: :RTMP_INPUT, name: "example", room_name: "room_name", participant_identity: "participant_identity", participant_name: "participant_name", enable_transcoding: true)
+  {:ok, ingress} = ExLivekit.IngressService.create_ingress(
+    client,
+    input_type: :RTMP_INPUT,
+    name: "example",
+    room_name: "room_name",
+    participant_identity: "participant_identity",
+    participant_name: "participant_name",
+    enable_transcoding: true
+  )
   ```
 
   ## WHIP Example
 
   ```elixir
-  {:ok, ingress} = ExLivekit.IngressService.create_ingress(client, input_type: :WHIP_INPUT, name: "example", room_name: "room_name", participant_identity: "participant_identity", participant_name: "participant_name", enable_transcoding: false)
+  {:ok, ingress} = ExLivekit.IngressService.create_ingress(
+    client,
+    input_type: :WHIP_INPUT,
+    name: "example",
+    room_name: "room_name",
+    participant_identity: "participant_identity",
+    participant_name: "participant_name",
+    enable_transcoding: false
+  )
   ```
 
   ## URL Example
 
   ```elixir
-  {:ok, ingress} = ExLivekit.IngressService.create_ingress(client, input_type: :URL_INPUT, url: "https://example.com/stream.mp4", name: "example", room_name: "room_name", participant_identity: "participant_identity", participant_name: "participant_name", enable_transcoding: true)
+  {:ok, ingress} = ExLivekit.IngressService.create_ingress(
+    client,
+    input_type: :URL_INPUT,
+    url: "https://example.com/stream.mp4",
+    name: "example",
+    room_name: "room_name",
+    participant_identity: "participant_identity",
+    participant_name: "participant_name",
+    enable_transcoding: true
+  )
   ```
   """
   @spec create_ingress(Client.t(), create_ingress_opts()) ::

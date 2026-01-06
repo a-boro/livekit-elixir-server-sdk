@@ -7,7 +7,7 @@ defmodule ExLivekit.MixProject do
   def project do
     [
       app: :ex_livekit,
-      elixir: "~> 1.17",
+      elixir: "~> 1.18",
       dialyzer: [plt_add_apps: [:mix]],
       deps: deps(),
       description: description(),
@@ -52,13 +52,36 @@ defmodule ExLivekit.MixProject do
 
   defp docs do
     [
-      main: "readme",
-      extras: ["README.md", "LICENSE"],
+      main: "ExLivekit",
       formatters: ["html"],
-      output: "doc",
       source_ref: "main",
       source_url: @source_url,
-      skip_undefined_reference_warnings_on: &String.match?(&1, ~r"^Livekit\.*"),
+      skip_undefined_reference_warnings_on: &String.match?(to_string(&1), ~r"^Livekit\.*"),
+      extra_section: "GUIDES",
+      extras: [
+        "guides/Getting Started.md",
+        "guides/Access Token.md",
+        "guides/Configuration.md",
+        "guides/usage/Client.md",
+        "guides/usage/Room.md",
+        "guides/usage/Ingress.md",
+        "guides/Protobufs.md"
+      ],
+      groups_for_extras: [
+        Introduction: [
+          "guides/Getting Started.md",
+          "guides/Configuration.md",
+          "guides/Access Token.md"
+        ],
+        Services: [
+          "guides/usage/Client.md",
+          "guides/usage/Room.md",
+          "guides/usage/Ingress.md"
+        ],
+        Other: [
+          "guides/Protobufs.md"
+        ]
+      ],
       groups_for_modules: [
         "Access Token": [
           ExLivekit.AccessToken,
@@ -99,6 +122,7 @@ defmodule ExLivekit.MixProject do
     [
       name: "ex_livekit",
       files: ["lib", "mix.exs", ".formatter.exs", "README.md", "LICENSE"],
+      maintainers: ["Adrian Borowski"],
       licenses: ["MIT"],
       links: %{
         "GitHub" => @source_url
