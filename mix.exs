@@ -7,7 +7,7 @@ defmodule ExLivekit.MixProject do
   def project do
     [
       app: :ex_livekit,
-      elixir: "~> 1.17",
+      elixir: "~> 1.18",
       dialyzer: [plt_add_apps: [:mix]],
       deps: deps(),
       description: description(),
@@ -122,6 +122,7 @@ defmodule ExLivekit.MixProject do
     [
       name: "ex_livekit",
       files: ["lib", "mix.exs", ".formatter.exs", "README.md", "LICENSE"],
+      maintainers: ["Adrian Borowski"],
       licenses: ["MIT"],
       links: %{
         "GitHub" => @source_url
