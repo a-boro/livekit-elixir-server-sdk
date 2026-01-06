@@ -7,7 +7,7 @@
 ```elixir
 def deps do
   [
-    {:ex_livekit, git: "https://github.com/a-boro/livekit-elixir-server-sdk.git", branch: "main"}
+    {:ex_livekit, "~> 0.1.0"}
   ]
 end
 ```
