@@ -2,6 +2,7 @@ defmodule ExLivekit.AccessTokenTest do
   use ExUnit.Case, async: false
 
   alias ExLivekit.AccessToken
+  alias ExLivekit.Grants.VideoGrant
 
   @default_ttl 3600
 
@@ -166,7 +167,7 @@ defmodule ExLivekit.AccessTokenTest do
     test "adds first grants to the access token when grants are struct", %{
       base_access_token: access_token
     } do
-      grants = %ExLivekit.Grants.VideoGrant{room_create: true}
+      grants = %VideoGrant{room_create: true}
 
       access_token = AccessToken.add_grants(access_token, grants)
 
@@ -180,18 +181,18 @@ defmodule ExLivekit.AccessTokenTest do
 
       access_token = AccessToken.add_grants(access_token, grants)
 
-      assert access_token.grants.video == %ExLivekit.Grants.VideoGrant{room_create: true}
+      assert access_token.grants.video == %VideoGrant{room_create: true}
     end
 
     test "merges grants when grants are map", %{base_access_token: access_token} do
       access_token =
-        AccessToken.add_grants(access_token, %ExLivekit.Grants.VideoGrant{room_list: true})
+        AccessToken.add_grants(access_token, %VideoGrant{room_list: true})
 
       grants = %{room_create: true}
 
       access_token = AccessToken.add_grants(access_token, grants)
 
-      assert access_token.grants.video == %ExLivekit.Grants.VideoGrant{
+      assert access_token.grants.video == %VideoGrant{
                room_create: true,
                room_list: true
              }
@@ -215,6 +216,22 @@ defmodule ExLivekit.AccessTokenTest do
       assert claims["iss"] == api_key
       assert claims["sub"] == ""
       assert claims["nbf"] < claims["exp"]
+    end
+
+    test "creates join room token when identity and room are provided" do
+      assert AccessToken.new(api_key: "api_key", api_secret: "api_secret")
+             |> AccessToken.add_identity("test_identity")
+             |> AccessToken.add_grants(%VideoGrant{room_join: true, room: "test_room"})
+             |> AccessToken.to_jwt()
+             |> is_binary()
+    end
+
+    test "raises an error when identity and room are not provided" do
+      assert_raise ArgumentError, "identity and room must be set when joining a room", fn ->
+        AccessToken.new(api_key: "api_key", api_secret: "api_secret")
+        |> AccessToken.add_grants(%VideoGrant{room_join: true})
+        |> AccessToken.to_jwt()
+      end
     end
   end
 end

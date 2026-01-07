@@ -294,7 +294,7 @@ defmodule ExLivekit.AccessToken do
     signer = Joken.Signer.create("HS256", api_secret)
 
     if is_struct(grants.video) and grants.video.room_join == true and
-         (not grants.identity or is_nil(grants.video.room)) do
+         (grants.identity in [nil, ""] or is_nil(grants.video.room)) do
       raise ArgumentError, "identity and room must be set when joining a room"
     end
 
