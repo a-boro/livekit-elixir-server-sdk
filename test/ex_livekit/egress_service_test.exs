@@ -41,7 +41,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/StartRoomCompositeEgress"
+    @url "/twirp/livekit.Egress/StartRoomCompositeEgress"
     test "starts room composite egress", %{bypass: bypass, client: client} do
       room_name = "test_room"
       output = %EncodedFileOutput{filepath: "test.mp4", file_type: :MP4}
@@ -119,7 +119,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/StartParticipantEgress"
+    @url "/twirp/livekit.Egress/StartParticipantEgress"
     test "starts participant egress", %{bypass: bypass, client: client} do
       room_name = "test_room"
       identity = "participant1"
@@ -191,7 +191,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/StartTrackCompositeEgress"
+    @url "/twirp/livekit.Egress/StartTrackCompositeEgress"
     test "starts track composite egress", %{bypass: bypass, client: client} do
       room_name = "test_room"
 
@@ -272,7 +272,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/StartTrackEgress"
+    @url "/twirp/livekit.Egress/StartTrackEgress"
     test "starts track egress with DirectFileOutput", %{bypass: bypass, client: client} do
       room_name = "test_room"
       track_id = "track_123"
@@ -341,7 +341,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/StartWebEgress"
+    @url "/twirp/livekit.Egress/StartWebEgress"
     test "starts web egress", %{bypass: bypass, client: client} do
       url = "https://example.com"
       output = %EncodedFileOutput{filepath: "web.mp4", file_type: :MP4}
@@ -411,7 +411,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/UpdateLayout"
+    @url "/twirp/livekit.Egress/UpdateLayout"
     test "updates layout", %{bypass: bypass, client: client} do
       egress_id = "egress_808"
       layout = "grid"
@@ -445,7 +445,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/UpdateStream"
+    @url "/twirp/livekit.Egress/UpdateStream"
     test "updates stream", %{bypass: bypass, client: client} do
       egress_id = "egress_909"
 
@@ -511,7 +511,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/ListEgress"
+    @url "/twirp/livekit.Egress/ListEgress"
     test "lists all egress", %{bypass: bypass, client: client} do
       egress1 = %Livekit.EgressInfo{
         egress_id: "egress_1",
@@ -636,7 +636,7 @@ defmodule ExLivekit.EgressServiceTest do
       bypass_client()
     end
 
-    @url "/twirp/livekit.EgressService/StopEgress"
+    @url "/twirp/livekit.Egress/StopEgress"
     test "stops egress", %{bypass: bypass, client: client} do
       egress_id = "egress_1111"
 

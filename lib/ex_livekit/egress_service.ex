@@ -34,7 +34,7 @@ defmodule ExLivekit.EgressService do
     :PORTRAIT_H264_1080P_60
   ]
 
-  @svc "EgressService"
+  @svc "Egress"
 
   @type room_name :: String.t()
   @type egress_id :: String.t()
