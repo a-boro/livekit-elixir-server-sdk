@@ -34,13 +34,13 @@ defmodule ExLivekit.MixProject do
   defp deps do
     [
       # http clients
-      {:hackney, "~> 1.22", optional: true},
+      {:hackney, "~> 3.0", optional: true},
       {:finch, "~> 0.2", optional: true},
 
       # data formats
       {:joken, "~> 2.6"},
       {:jason, "~> 1.4"},
-      {:protobuf, "~> 0.15.0"},
+      {:protobuf, "~> 0.16.0"},
 
       # devtools
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
