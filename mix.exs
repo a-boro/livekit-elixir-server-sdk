@@ -34,7 +34,7 @@ defmodule ExLivekit.MixProject do
   defp deps do
     [
       # http clients
-      {:hackney, "~> 3.0", optional: true},
+      {:hackney, "~> 1.21", optional: true},
       {:finch, "~> 0.2", optional: true},
 
       # data formats
