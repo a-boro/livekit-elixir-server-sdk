@@ -6,7 +6,7 @@ defmodule ExLivekit.Client.HTTPClient do
   to be used with `ExLivekit.Client`. Implementations should provide:
 
   - `child_spec/0` - Returns a supervisor child specification for the HTTP client
-  - `request/3` - Makes an HTTP POST request with the given URL, payload, and headers
+  - `request/4` - Makes an HTTP POST request with the given URL, payload, headers, and request options
 
   ## Headers Format
 
@@ -36,7 +36,12 @@ defmodule ExLivekit.Client.HTTPClient do
           | :unknown
 
   @callback child_spec() :: :supervisor.child_spec()
-  @callback post(url :: String.t(), payload :: binary(), headers :: headers()) ::
+  @callback post(
+              url :: String.t(),
+              payload :: binary(),
+              headers :: headers(),
+              request_opts :: Keyword.t()
+            ) ::
               {:ok, %{status: integer(), headers: headers(), body: binary()}}
               | {:error, %{reason: client_error_reason()}}
 

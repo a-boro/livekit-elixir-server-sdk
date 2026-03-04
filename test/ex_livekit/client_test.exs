@@ -1,6 +1,7 @@
 defmodule ExLivekit.ClientTest do
   use ExUnit.Case, async: false
   alias ExLivekit.Client
+  alias ExLivekit.Config
 
   setup do
     on_exit(fn ->
@@ -20,7 +21,12 @@ defmodule ExLivekit.ClientTest do
       Application.put_env(:ex_livekit, :api_key, api_key)
       Application.put_env(:ex_livekit, :api_secret, api_secret)
 
-      assert Client.new() == %Client{host: host, api_key: api_key, api_secret: api_secret}
+      assert Client.new() == %Client{
+               host: host,
+               api_key: api_key,
+               api_secret: api_secret,
+               request_opts: Config.request_opts()
+             }
     end
 
     test "raises an error if the required config options are not set" do
@@ -51,7 +57,27 @@ defmodule ExLivekit.ClientTest do
       assert Client.new(host: host, api_key: api_key, api_secret: api_secret) == %Client{
                host: host,
                api_key: api_key,
-               api_secret: api_secret
+               api_secret: api_secret,
+               request_opts: Config.request_opts()
+             }
+    end
+
+    test "stores per-client request options" do
+      host = "https://api.livekit.io"
+      api_key = "test_key"
+      api_secret = "test_secret"
+      request_opts = [recv_timeout: 15_000]
+
+      assert Client.new(
+               host: host,
+               api_key: api_key,
+               api_secret: api_secret,
+               request_opts: request_opts
+             ) == %Client{
+               host: host,
+               api_key: api_key,
+               api_secret: api_secret,
+               request_opts: Config.request_opts(request_opts)
              }
     end
   end

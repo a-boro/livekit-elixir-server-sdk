@@ -256,4 +256,42 @@ defmodule ExLivekit.ConfigTest do
       assert Config.fetch_from_opts!(:name, opts) == "test"
     end
   end
+
+  describe "request_opts/1" do
+    test "returns hackney options when http_client is hackney" do
+      Application.put_env(:ex_livekit, :http_client, :hackney)
+      Application.put_env(:ex_livekit, :hackney_opts, connect_timeout: 10_000)
+
+      result = Config.request_opts()
+
+      assert result[:timeout] == 30_000
+      assert result[:connect_timeout] == 10_000
+    end
+
+    test "merges and overrides hackney config options with per-client options" do
+      Application.put_env(:ex_livekit, :http_client, :hackney)
+      Application.put_env(:ex_livekit, :hackney_opts, timeout: 30_000, recv_timeout: 5_000)
+
+      result = Config.request_opts(recv_timeout: 20_000)
+
+      assert result[:timeout] == 30_000
+      assert result[:recv_timeout] == 20_000
+    end
+
+    test "merges and overrides finch config options with per-client options" do
+      Application.put_env(:ex_livekit, :http_client, :finch)
+      Application.put_env(:ex_livekit, :finch_opts, receive_timeout: 30_000)
+
+      result = Config.request_opts(receive_timeout: 20_000)
+
+      assert result[:receive_timeout] == 20_000
+    end
+
+    test "uses config options when per-client options are nil" do
+      Application.put_env(:ex_livekit, :http_client, :finch)
+      Application.put_env(:ex_livekit, :finch_opts, receive_timeout: 25_000)
+
+      assert Config.request_opts(nil) == [receive_timeout: 25_000]
+    end
+  end
 end

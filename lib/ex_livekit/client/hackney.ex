@@ -42,8 +42,8 @@ defmodule ExLivekit.Client.Hackney do
   end
 
   @impl ExLivekit.Client.HTTPClient
-  def post(url, payload, headers \\ []) do
-    opts = [:with_body | Config.hackney_opts()]
+  def post(url, payload, headers \\ [], request_opts \\ []) do
+    opts = [:with_body | request_opts]
 
     case :hackney.request(:post, url, headers, payload, opts) do
       # With :with_body, Hackney should always return a body, but handle edge case
