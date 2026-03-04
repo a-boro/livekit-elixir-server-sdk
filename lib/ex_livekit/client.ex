@@ -36,7 +36,7 @@ defmodule ExLivekit.Client do
   alias ExLivekit.Config
   alias ExLivekit.Grants.{SIPGrant, VideoGrant}
 
-  defstruct [:host, :api_key, :api_secret]
+  defstruct [:host, :api_key, :api_secret, request_opts: []]
 
   @base_headers [
     {"User-Agent", "Livekit Elixir SDK"},
@@ -46,7 +46,8 @@ defmodule ExLivekit.Client do
   @type t :: %__MODULE__{
           host: String.t(),
           api_key: String.t(),
-          api_secret: String.t()
+          api_secret: String.t(),
+          request_opts: Keyword.t()
         }
 
   @doc """
@@ -57,6 +58,7 @@ defmodule ExLivekit.Client do
     * `:host` - The LiveKit server host (required)
     * `:api_key` - Your LiveKit API key (required)
     * `:api_secret` - Your LiveKit API secret (required)
+    * `:request_opts` - Per-client request options merged with config defaults (optional)
 
   If options are not provided, they will be fetched from the application environment.
 
@@ -70,12 +72,20 @@ defmodule ExLivekit.Client do
       %ExLivekit.Client{...}
   """
 
-  @spec new(opts :: [host: String.t(), api_key: String.t(), api_secret: String.t()]) :: t()
+  @spec new(
+          opts :: [
+            host: String.t(),
+            api_key: String.t(),
+            api_secret: String.t(),
+            request_opts: Keyword.t()
+          ]
+        ) :: t()
   def new(opts \\ []) do
     %__MODULE__{
       host: Config.fetch_from_opts!(:host, opts),
       api_key: Config.fetch_from_opts!(:api_key, opts),
-      api_secret: Config.fetch_from_opts!(:api_secret, opts)
+      api_secret: Config.fetch_from_opts!(:api_secret, opts),
+      request_opts: Config.request_opts(opts[:request_opts])
     }
   end
 
@@ -114,7 +124,7 @@ defmodule ExLivekit.Client do
     headers = auth_headers ++ @base_headers
     encoded_payload = Protobuf.encode(payload)
 
-    case http_client.post(url, encoded_payload, headers) do
+    case http_client.post(url, encoded_payload, headers, client.request_opts) do
       {:ok, %{status: 200, body: body}} ->
         {:ok, body}
 

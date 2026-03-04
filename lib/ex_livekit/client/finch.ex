@@ -41,8 +41,7 @@ defmodule ExLivekit.Client.Finch do
   end
 
   @impl ExLivekit.Client.HTTPClient
-  def post(url, payload, headers \\ []) do
-    request_opts = ExLivekit.Config.finch_opts()
+  def post(url, payload, headers \\ [], request_opts \\ []) do
     request = Finch.build(:post, url, headers, payload)
 
     case Finch.request(request, __MODULE__, request_opts) do

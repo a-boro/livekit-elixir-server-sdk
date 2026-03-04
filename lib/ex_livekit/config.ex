@@ -29,6 +29,18 @@ defmodule ExLivekit.Config do
   @spec finch_pool_opts() :: Keyword.t()
   def finch_pool_opts, do: get_and_merge_with_default(:finch_pool_opts)
 
+  @spec request_opts() :: Keyword.t()
+  @spec request_opts(Keyword.t()) :: Keyword.t()
+  def request_opts(client_request_opts \\ []) do
+    config_opts =
+      case http_client() do
+        ExLivekit.Client.Hackney -> hackney_opts()
+        ExLivekit.Client.Finch -> finch_opts()
+      end
+
+    Keyword.merge(config_opts, client_request_opts || [])
+  end
+
   @spec fetch_from_opts!(key :: atom(), opts :: Keyword.t()) :: any()
   def fetch_from_opts!(key, opts) do
     result = opts[key] || Application.get_env(:ex_livekit, key)
