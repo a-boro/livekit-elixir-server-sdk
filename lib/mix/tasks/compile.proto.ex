@@ -53,7 +53,6 @@ defmodule Mix.Tasks.Compile.Proto do
     params = [
       "--elixir_out=#{@output_dir}",
       "--proto_path=#{@protocol_dir}",
-      "--include_imports",
       proto_file_path
     ]
 
